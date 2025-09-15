@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section className="mt-24">
+    <section className="mt-24 ">
       <Header />
       {children}
     </section>
