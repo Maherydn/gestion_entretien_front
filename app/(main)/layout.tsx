@@ -6,8 +6,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section className="mt-24 ">
-      <Header />
+    <section className="mt-15 mb-5">
+      {/* <Header /> */}
       {children}
     </section>
   );

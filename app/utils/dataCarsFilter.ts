@@ -8,14 +8,12 @@ interface Filters {
 
 export const dataCarsFilter = (cars: Car[], filters: Filters): Car[] => {
   return cars.filter((car) => {
-    const matchesCarType = filters.carType
-      ? car.carType.type === filters.carType
-      : true;
+    const matchesCarType = filters.carType ? car.carType.type === filters.carType: true;
     const matchesFuel = filters.fuel ? car.fuel.type === filters.fuel : true;
     const matchesSearch = filters.search
       ? car.immatriculation.toLowerCase().includes(filters.search.toLowerCase())
       : true;
 
-    return matchesCarType && matchesFuel && matchesSearch;
+    return matchesCarType  && matchesFuel && matchesSearch;
   });
 };

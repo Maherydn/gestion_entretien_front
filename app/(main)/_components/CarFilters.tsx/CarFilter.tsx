@@ -9,6 +9,7 @@ const carTypes = [
   { id: 2, name: "Berline" },
   { id: 3, name: "Coupé" },
   { id: 4, name: "Pickup" },
+  { id: 5, name: "Rallye" },
 ];
 
 const fuels = [
@@ -20,9 +21,10 @@ const fuels = [
 
 interface CarFilterProps {
   onChange: (values: { carType: string; fuel: string; search: string }) => void;
+  show: string;
 }
 
-const CarFilter: React.FC<CarFilterProps> = ({ onChange }) => {
+const CarFilter: React.FC<CarFilterProps> = ({ onChange,show }) => {
   const [value, setValues] = useState({
     carType: "",
     fuel: "",
@@ -42,10 +44,10 @@ const CarFilter: React.FC<CarFilterProps> = ({ onChange }) => {
   }, [value, onChange]);
 
   return (
-    <div className="flex flex-col w-full gap-6 bg-vert px-4 py-2">
+    <div className={`flex flex-col  gap-6 bg-vert px-4 py-2  ${show}`}>
       {/* Bloc Filtre */}
-      <div className="flex gap-6 items-center flex-wrap">
-        <p className="capitalize text-white text-xl">Filtre :</p>
+      <div className="flex gap-4 items-center w-full max-sm:flex-wrap">
+        <p className="max-sm:flex sm:flex-1 capitalize text-white text-xl ">Filtre</p>
         <SelectField
           id="carType"
           name="carType"
@@ -65,8 +67,8 @@ const CarFilter: React.FC<CarFilterProps> = ({ onChange }) => {
       </div>
 
       {/* Bloc Recherche */}
-      <div className="flex gap-6 items-center flex-wrap">
-        <p className="capitalize text-white text-xl">Recherche :</p>
+      <div className="flex gap-4 items-center w-full max-sm:flex-wrap">
+        <p className="max-sm:flex sm:flex-1 capitalize text-white text-xl">Recherche</p>
         <SelectField
           id="fuel"
           name="fuel"

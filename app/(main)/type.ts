@@ -6,6 +6,7 @@ export interface CarType {
 export interface Fuel {
   id: number;
   type: string;
+  conso: number;
 }
 
 export interface Car {
@@ -16,6 +17,7 @@ export interface Car {
   assurance: string;
   etat: string;
   imageUrl?: string;
+  sit: number;
   carType: CarType;
   fuel: Fuel;
 }
