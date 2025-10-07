@@ -20,7 +20,7 @@ const CarCard = ({
   imageUrl,
 }: CarCardProps) => {
   return (
-    <Link href={`/details/${id}?im=${immatriculation}`}>
+    <Link href={`/details/${id}?im=${immatriculation}&id=${id}`}>
       <div className="flex flex-col h-96 w-64 min-w-0 rounded-sm overflow-hidden shadow-md">
         {/* Image ou placeholder */}
         <div className="w-full h-3/5 bg-orange-50 flex items-center justify-center">

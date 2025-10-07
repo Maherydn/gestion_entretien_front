@@ -4,6 +4,7 @@ import { FuelIcon } from "../../../../_assets/icon";
 
 interface SelectedCardProps {
     id: number;
+    show : string;
 }
 interface SelectedCard{
   icon : string;
@@ -31,11 +32,11 @@ const rowDetailCar = (icon:string,title:string|null|undefined,value:string|null|
   );
 }
 const Detail = ({
-    id,
+    id,show
   }: SelectedCardProps) => {
-    const selectedCar = cars[id-1];
+    const selectedCar = cars[id];
   return (
-    <div className="flex-1 bg-jaune flex flex-col items-center gap-2 shadow-jaune shadow-lg max-lg:hidden">
+    <div className={`flex-1 bg-jaune flex flex-col items-center gap-2 shadow-jaune shadow-lg max-lg:${show}`}>
         <div className="w-full h-1/5 flex items-center justify-center">
           {selectedCar.imageUrl ? (
             <img src={`${selectedCar.imageUrl}`} alt={`${selectedCar.immatriculation}`} className="w-full h-full object-cover object-no-repeat object-center" />

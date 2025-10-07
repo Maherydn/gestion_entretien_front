@@ -6,13 +6,12 @@ import Menu from "./Menu";
 interface HeaderProps{
   title?: string;
   subTitle?: string;
-  showFilter? : React.MouseEventHandler<HTMLButtonElement>;
+  listMenu: {id: number, name: string, action: React.MouseEventHandler<HTMLButtonElement>}[];
 }
-
 
 const Header = (
   {
-    title,subTitle,showFilter
+    title,subTitle,listMenu
   }:HeaderProps
 ) => {
   const [show, setShow] = useState("hidden")
@@ -35,7 +34,7 @@ const Header = (
             </p>
         </div>
       </div>
-      <Menu show={show} showFilter={showFilter}/>
+      <Menu show={show} listMenu={listMenu}/>
     </header>
   );
 };

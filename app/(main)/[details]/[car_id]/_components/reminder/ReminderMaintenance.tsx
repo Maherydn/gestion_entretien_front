@@ -1,9 +1,19 @@
 import { reminders } from "../../data";
 import ReminderItem from "./ReminderItem";
 
-const ReminderMaintenance = () => {
+interface reminderMaintenanceProps{
+  show: string;
+}
+const ReminderMaintenance = (
+  {
+    show
+  }:reminderMaintenanceProps
+) => {
   return (
-    <div className="flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 shadow-jaune shadow-lg max-md:hidden"> 
+    <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 shadow-jaune shadow-lg 
+      max-md:${show}
+    
+    `}> 
       <h2 className="text-2xl uppercase font-bold">rappels</h2>
 
       <div className="w-full flex-1 overflow-y-auto space-y-6 px-2">

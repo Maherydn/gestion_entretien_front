@@ -19,17 +19,26 @@ export default function Main() {
   });
 
   const [show, setShow] = useState("hidden")
-
+  const [showSuv, setShowSuv] = useState("Suv")
+  
   const showFilter = () => {
     setShow( show === "hidden"? "visible" : "hidden")
+  }
+  const actionToshowSuv = () => {
+    setShowSuv( showSuv === "Suv"? "Suv2.0" : "Suv")
+    console.log(showSuv)
   }
 
   const filteredCars = dataCarsFilter(cars, filters);
 
+  const listMenu = [
+    { id: 1, name: "Trier", action: showFilter },
+    { id: 2, name: "SUV", action: actionToshowSuv },
+  ];
 
   return (
     <div className="w-full flex md:px-6 flex-col gap-8">
-      <Header title="Listes des véhicules" showFilter={showFilter}/>
+      <Header title="Listes des véhicules" listMenu={listMenu}/>
       <CarFilter onChange={setFilters} show={show}/>
       
       <div className="w-full flex items-start md:justify-start flex-wrap gap-6 px-1 justify-center">
