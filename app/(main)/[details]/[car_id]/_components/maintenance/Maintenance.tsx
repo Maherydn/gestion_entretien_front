@@ -3,6 +3,7 @@
 import { useState } from "react";
 import MaintenanceFilter from "./MaintenanceFilter";
 import SelectField from "../../../../_components/CarFilters.tsx/SelectField";
+import FloatingButton from "@/app/(main)/_components/FloatingButton";
 
 const Maintenance = () => {
   const [filters, setFilters] = useState({
@@ -12,7 +13,7 @@ const Maintenance = () => {
   const [value, setValue] = useState<string>('')
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
   return (
-    <div className="flex-2 flex flex-col p-2 gap-4 rounded">
+    <div className="flex-2 flex flex-col p-2 gap-4 rounded relative">
       <h2 className="text-xl font-semibold ">Historiques des entretiens</h2>
       <MaintenanceFilter onChange={setFilters} />
       <div className="flex gap-4 items-center max-sm:flex-wrap">
@@ -29,6 +30,9 @@ const Maintenance = () => {
         <div className="max-sm:flex sm:flex-2 flex-col w-full bg-jaune">
 
         </div>
+      </div>
+      <div className="fixed bottom-5 max-lg:right-5 right-80 p-4">
+        <FloatingButton />
       </div>
     </div>
   );

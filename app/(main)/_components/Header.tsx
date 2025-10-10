@@ -20,7 +20,7 @@ const Header = (
     setShow( show === "hidden"? "visible" : "hidden")
   }
   return (
-    <header className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-6xl bg-vert">
+    <header className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full bg-vert z-100">
       <div className="flex w-full items-center justify-between h-full px-10 my-2">
         <div className="w-8 h-8 text-white">
           <button type="button" onClick={showMenu} className="cursor-pointer">

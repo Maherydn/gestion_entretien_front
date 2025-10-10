@@ -11,8 +11,8 @@ const ReminderMaintenance = (
 ) => {
   return (
     <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 shadow-jaune shadow-lg 
-      max-md:${show}
-    
+      max-md:${show} max-md:fixed max-md:top-18  max-sm:w-screen max-md:px-5 max-md:h-[90%] 
+      z-20
     `}> 
       <h2 className="text-2xl uppercase font-bold">rappels</h2>
 
@@ -21,12 +21,12 @@ const ReminderMaintenance = (
           <ReminderItem key={index} {...reminder} />
         ))}
       </div>
+      
       <div className="flex flex-col w-full p-2 gap-2">
         <button className="w-full bg-vert py-1 font-semibold cursor-pointer">
           Planifier un entretien
         </button>
       </div>  
-      
     </div>
   );
 };

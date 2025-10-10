@@ -20,17 +20,28 @@ function Details() {
   const [showRappel, setShowRappel] = useState("hidden")
   
   const actionToShowDetail = () => {
-    setShowDetail( showDetail === "hidden"? "visible" : "hidden")
-    console.log("detail")
+    if (showDetail === "hidden"){
+      setShowDetail("visible")
+      setShowRappel("hidden" )
+    }
+    else{
+      setShowDetail("hidden")
+    }
   }
-  const actionToshowRappel = () => {
-    setShowRappel( showRappel === "hidden"? "visible" : "hidden" )
-    console.log("rappel")
+  const actionToshowRappel = () => { 
+    if (showRappel === "hidden"){
+      setShowRappel("visible" )
+      setShowDetail("hidden")
+    }
+    else{
+      setShowRappel("hidden")
+    }
   }
   const listMenu = [
     { id: 1, name: "Rappels", action: actionToshowRappel },
     { id: 2, name: "Informations", action: actionToShowDetail  },
   ];
+  console.log(showDetail)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -50,14 +61,12 @@ function Details() {
   }
 
   return (
-    <div className="w-full h-[calc(100vh-96px)] flex gap-2 pt-10">
+    <div className="w-full h-full flex gap-2 pt-7 md:px-2">
         <Header title="Détails" subTitle={immatriculation.toLocaleString()} listMenu={listMenu}/>
         <ReminderMaintenance show={showRappel}/>
         <Maintenance />
         <Detail id={id-1} show={showDetail}/>
-      <div className="fixed bottom-5 max-lg:right-5 right-80 p-4">
-        <FloatingButton />
-      </div>
+      
     </div>
   );
 }

@@ -20,7 +20,7 @@ export default function Main() {
 
   const [show, setShow] = useState("hidden")
   const [showSuv, setShowSuv] = useState("Suv")
-  
+
   const showFilter = () => {
     setShow( show === "hidden"? "visible" : "hidden")
   }
@@ -37,11 +37,11 @@ export default function Main() {
   ];
 
   return (
-    <div className="w-full flex md:px-6 flex-col gap-8">
+    <div className="w-full flex md:px-6 flex-col gap-8 relative">
       <Header title="Listes des véhicules" listMenu={listMenu}/>
       <CarFilter onChange={setFilters} show={show}/>
       
-      <div className="w-full flex items-start md:justify-start flex-wrap gap-6 px-1 justify-center">
+      <div className="w-full flex items-start md:justify-between  flex-wrap gap-6 px-5 justify-center">
        {filteredCars.map((car) => (
         <CarCard
            key={car.id}
@@ -54,7 +54,7 @@ export default function Main() {
            imageUrl={car.imageUrl}        
         />
       ))}
-        <div className="fixed bottom-15 right-10 p-4">
+        <div className="fixed bottom-10 right-10 ">
           <FloatingButton />
         </div>
       </div>

@@ -5,6 +5,10 @@ export const reminders: Reminder[] = [
   { id: 2, title: "vidange moteur", value: "20 000km" },
   { id: 3, title: "freins avant", value: "50 000km" },
   { id: 4, title: "filtre à air", value: "10 000km" },
+  { id: 5, title: "changement batterie", value: "1500 000km" },
+  { id: 6, title: "vidange moteur", value: "20 000km" },
+  { id: 7, title: "freins avant", value: "50 000km" },
+  { id: 8, title: "filtre à air", value: "10 000km" },
 
 ];
 

@@ -36,7 +36,10 @@ const Detail = ({
   }: SelectedCardProps) => {
     const selectedCar = cars[id];
   return (
-    <div className={`flex-1 bg-jaune flex flex-col items-center gap-2 shadow-jaune shadow-lg max-lg:${show}`}>
+    <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 md:shadow-jaune shadow-lg 
+      max-lg:fixed max-lg:top-18 max-sm:w-screen max-lg:px-5 max-lg:h-[calc(100vh-80px)] 
+      md:max-lg: h-full max-lg:${show} z-20
+    `}>
         <div className="w-full h-1/5 flex items-center justify-center">
           {selectedCar.imageUrl ? (
             <img src={`${selectedCar.imageUrl}`} alt={`${selectedCar.immatriculation}`} className="w-full h-full object-cover object-no-repeat object-center" />
@@ -48,7 +51,7 @@ const Detail = ({
           Tout afficher
         </button>
         {/* <div className="w-full flex items-start md:justify-start flex-wrap gap-6 px-1 justify-center overflow-y-auto flex-1"> */}
-        <div className="flex flex-col w-full overflow-y-auto p-2 gap-2 flex-1">
+        <div className="flex flex-col w-full overflow-y-auto overflow-x-hidden p-2 gap-2 flex-1">
           <div className="flex flex-row items-center">
             {rowDetailCar("/fuel.svg",selectedCar.fuel.type,selectedCar.fuel.conso.toLocaleString()+"L/100")}
             {rowDetailCar("/odo.svg",null,selectedCar.kilometrage.toLocaleString()+" KM")}
