@@ -1,6 +1,10 @@
 import FormLogin from "./_components/FormLogin";
+//import type { Metadata } from "next";
 import { Pacifico  } from 'next/font/google'
  
+// export const metadata: Metadata = {
+//   title: "Login",
+// };
 const pacifico = Pacifico ({
   weight: '400',
   subsets: ['latin'],

@@ -5,11 +5,11 @@ export const cars: Car[] = [
     id: 1,
     immatriculation: "1111 TCA",
     kilometrage: 150000,
-    visiteTechnique: "25/02/2025",
-    assurance: "25/02/2025",
+    visiteTechnique: "2025-01-22",
+    assurance: "2025-01-23",
     etat: "En service",
     imageUrl: "/images/photo_vehicules/bmwe30.jpg",
-    carType: { id: 1, type: "SUV" },
+    carType: { id: 1, type: "Voiture" },
     fuel: { id: 1, type: "Essence", conso: 5 },
     sit: 5
   },
@@ -22,7 +22,7 @@ export const cars: Car[] = [
     etat: "Hors service",
     imageUrl: "/images/photo_vehicules/cruze.jpg",
     sit: 5,
-    carType: { id: 2, type: "Berline" },
+    carType: { id: 2, type: "Moto" },
     fuel: { id: 2, type: "Diesel", conso: 5 },
   },
   {
@@ -34,7 +34,7 @@ export const cars: Car[] = [
     etat: "En service",
     imageUrl: "/images/photo_vehicules/sprinter.jpg",
     sit: 12,
-    carType: { id: 3, type: "Coupé" },
+    carType: { id: 3, type: "Avion" },
     fuel: { id: 3, type: "Électrique", conso: 5 },
   },
   {
@@ -46,7 +46,7 @@ export const cars: Car[] = [
     etat: "Hors service",
     imageUrl: "/images/photo_vehicules/ToyotaPrado.jpg",
     sit: 7,
-    carType: { id: 4, type: "Pickup" },
+    carType: { id: 4, type: "Voiture" },
     fuel: { id: 4, type: "Hybride", conso: 5 },
   },
   {

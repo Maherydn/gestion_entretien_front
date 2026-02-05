@@ -8,6 +8,7 @@ interface CarCardProps {
   assurance: string;
   etat: string;
   imageUrl?: string;
+  user: string;
 }
 
 const CarCard = ({
@@ -18,9 +19,13 @@ const CarCard = ({
   assurance,
   etat,
   imageUrl,
+  user,
 }: CarCardProps) => {
+  const bulleNotif = <div className="absolute top-[-2%] right-[-6%] bg-rouge px-3 py-1 text-white text-xl font-bold rounded-full">{id}</div>
+  const linkGerant = `/details/${id}?im=${immatriculation}&id=${id}`
+  const linkChauffeur = `/login`
   return (
-    <Link href={`/details/${id}?im=${immatriculation}&id=${id}`}>
+    <Link href={user === "Gerant"? linkGerant : linkChauffeur}>
       <div className="relative">
         <div className="flex flex-col h-96 w-64 min-w-0 rounded-sm overflow-hidden shadow-md relative">
           {/* Image ou placeholder */}
@@ -56,9 +61,10 @@ const CarCard = ({
             </div>
           </div>
         </div>
-        <div className="absolute top-[-2%] right-[-6%] bg-rouge px-3 py-1 text-white text-xl font-bold rounded-full">
-          {id}
-        </div>
+        { user === "Gerant" ? 
+          bulleNotif
+          :"" 
+        }
       </div>
     </Link>
   );

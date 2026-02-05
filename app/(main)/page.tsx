@@ -7,58 +7,45 @@ import FloatingButton from "./_components/FloatingButton";
 import { cars } from "./data";
 import { dataCarsFilter } from "../utils/dataCarsFilter";
 import Header from "./_components/Header";
+import Chauffeur from "./_chauffeur/page";
+import HomePage from "./_components/Homepage";
 
-import MaintenanceFilter from "././[details]/[car_id]/_components/maintenance/MaintenanceFilter";
+
+import MaintenanceFilter from "./details/[car_id]/_components/maintenance/MaintenanceFilter";
+import Gerant from "./_gerant/page";
+import Administrateur from "./_administrateur/page";
 
 // ---- Page principale ---- //
 export default function Main() {
-  const [filters, setFilters] = useState({
-    carType: "",
-    fuel: "",
-    search: "",
-  });
 
-  const [show, setShow] = useState("hidden")
-  const [showSuv, setShowSuv] = useState("Suv")
+  const [log, setLog] = useState("Administrateur")
 
-  const showFilter = () => {
-    setShow( show === "hidden"? "visible" : "hidden")
-  }
-  const actionToshowSuv = () => {
-    setShowSuv( showSuv === "Suv"? "Suv2.0" : "Suv")
-    console.log(showSuv)
-  }
-
-  const filteredCars = dataCarsFilter(cars, filters);
-
-  const listMenu = [
-    { id: 1, name: "Trier", action: showFilter },
-    { id: 2, name: "SUV", action: actionToshowSuv },
-  ];
-
-  return (
+  if (log === "Gerant"){
+    return (
     <div className="w-full flex md:px-6 flex-col gap-8 relative">
-      <Header title="Listes des véhicules" listMenu={listMenu}/>
-      <CarFilter onChange={setFilters} show={show}/>
-      
-      <div className="w-full flex items-start md:justify-between  flex-wrap gap-6 px-5 justify-center">
-       {filteredCars.map((car) => (
-        <CarCard
-           key={car.id}
-           id={car.id}
-           immatriculation={car.immatriculation}
-           kilometrage={car.kilometrage}
-           visiteTechnique={car.visiteTechnique}
-           assurance={car.assurance}
-           etat={car.etat}
-           imageUrl={car.imageUrl}        
-        />
-      ))}
-        <div className="fixed bottom-10 right-10 ">
-          <FloatingButton />
-        </div>
-      </div>
-      
+      <Gerant  user="Gerant"/>
     </div>
   );
+  }
+  if (log === "Chauffeur") {
+    return (
+    <div className="w-full flex md:px-6 flex-col gap-8 relative">
+      <HomePage user="Chauffeur"/>
+    </div>
+  );
+  }
+   if (log === "Administrateur") {
+    return (
+    <div className="w-full flex md:px-6 flex-col gap-8 relative items-center">
+      <Administrateur />
+    </div>
+  );
+  }
+   if (log === "Technicien") {
+    return (
+    <div className="w-full flex md:px-6 flex-col gap-8 relative">
+      <Chauffeur />
+    </div>
+  );
+  }
 }

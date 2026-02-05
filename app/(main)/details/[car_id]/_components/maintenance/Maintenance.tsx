@@ -13,7 +13,7 @@ const Maintenance = () => {
   const [value, setValue] = useState<string>('')
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
   return (
-    <div className="flex-2 flex flex-col p-2 gap-4 rounded relative">
+    <div className="flex-2 flex flex-col p-2 gap-4 min-sm:ml-[30%] min-sm:mr-[30%] rounded relative">
       <h2 className="text-xl font-semibold ">Historiques des entretiens</h2>
       <MaintenanceFilter onChange={setFilters} />
       <div className="flex gap-4 items-center max-sm:flex-wrap">
@@ -31,9 +31,9 @@ const Maintenance = () => {
 
         </div>
       </div>
-      <div className="fixed bottom-5 max-lg:right-5 right-80 p-4">
+      {/* <div className="fixed bottom-5 max-lg:right-5 right-80 p-4">
         <FloatingButton />
-      </div>
+      </div> */}
     </div>
   );
 };

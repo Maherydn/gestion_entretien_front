@@ -1,10 +1,15 @@
-import { cars } from "../../../../../(main)/data";
+/* eslint-disable @next/next/no-img-element */
+import { cars } from "../../../../data";
 import { FuelIcon } from "../../../../_assets/icon";
-
+import DetailModal  from "./detailModal/detailModal";
+import {useState} from 'react';
+import AddCarModal from "@/app/(main)/_gerant/modals/AddCarModal";
+import { Car } from "@/app/(main)/type";
 
 interface SelectedCardProps {
     id: number;
     show : string;
+    setImTitle?: (immatriculation: string ) => void;
 }
 interface SelectedCard{
   icon : string;
@@ -32,14 +37,25 @@ const rowDetailCar = (icon:string,title:string|null|undefined,value:string|null|
   );
 }
 const Detail = ({
-    id,show
+    id,show,setImTitle
   }: SelectedCardProps) => {
-    const selectedCar = cars[id];
+    const [selectedCar, setSelectedCar] = useState<Car>(cars[id]);
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [openModifyModal, setOpenModifyModal] = useState<boolean>(false);
+
+    const updateSelectCar = (updatedCar: Car) => {
+      setSelectedCar(updatedCar)
+    }
   return (
-    <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 md:shadow-jaune shadow-lg 
-      max-lg:fixed max-lg:top-18 max-sm:w-screen max-lg:px-5 max-lg:h-[calc(100vh-80px)] 
-      md:max-lg: h-full max-lg:${show} z-20
-    `}>
+    // <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 md:shadow-jaune shadow-lg 
+    //   max-lg:fixed max-lg:top-18 max-sm:w-screen max-lg:px-5 max-lg:h-[calc(100vh-80px)] 
+    //   max-lg:${show}
+    //   md:max-lg: h-full
+    // `}>
+      <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 shadow-jaune shadow-lg 
+      max-md:${show} fixed max-md:top-18 w-[25%] max-w-lg max-sm:w-screen max-md:px-5 h-[90%] right-0
+      z-20
+    `}>  
         <div className="w-full h-1/5 flex items-center justify-center">
           {selectedCar.imageUrl ? (
             <img src={`${selectedCar.imageUrl}`} alt={`${selectedCar.immatriculation}`} className="w-full h-full object-cover object-no-repeat object-center" />
@@ -47,7 +63,10 @@ const Detail = ({
             <span className="text-gray-500">Pas d’image</span>
           )}
         </div>
-        <button className="w-full  font-semibold bg-white cursor-pointer ">
+        <button 
+          className="w-full  font-semibold bg-white cursor-pointer "
+          onClick={() => setOpenModal(true)}  
+        >
           Tout afficher
         </button>
         {/* <div className="w-full flex items-start md:justify-start flex-wrap gap-6 px-1 justify-center overflow-y-auto flex-1"> */}
@@ -67,7 +86,6 @@ const Detail = ({
           <div className="flex flex-row items-center">
             {rowDetailCar("/odo.svg",null,selectedCar.kilometrage.toLocaleString()+" KM")}
             {rowDetailCar("/sit.svg",null,selectedCar.sit.toLocaleString()+" places")}
-            
           </div >
           <div className="flex w-full h-1/8 items-center p-2 gap-2 ">
             <h3 className="w-full font-bold">
@@ -81,7 +99,6 @@ const Detail = ({
             <h3  className="w-full font-bold">
               Visite technique
             </h3>
-            
             <div className="w-1/2 text-left text-sm font-semibold">
                 {selectedCar.visiteTechnique} 
               <p>
@@ -89,18 +106,39 @@ const Detail = ({
               </p>
             </div>
           </div>
-          
         </div>
-        
         <div className="flex flex-col w-full p-2 gap-2">
-          <button className="w-full bg-vert py-1  font-semibold cursor-pointer ">
+          <button 
+            className="w-full bg-vert py-1  font-semibold cursor-pointer "
+            onClick={() => setOpenModifyModal(true)}
+          >
+            
             Modifier
           </button>
           <button className="w-full bg-rouge py-1  font-semibold cursor-pointer ">
             Supprimer
           </button>
         </div>
+        {openModal && (
+        <DetailModal
+            isOpen={openModal}
+            onClose={() => setOpenModal(false)}
+            selectedCar = {selectedCar}
+            // submitReminder = {removeSelectedReminders}
+          />
+        )}
+        {openModifyModal && (
+        <AddCarModal
+            isOpen={openModifyModal}
+            onClose={() => setOpenModifyModal(false)}
+            selectedCar = {selectedCar}
+            setCars={updateSelectCar}
+            setImTitle = {setImTitle}
+            // submitReminder = {removeSelectedReminders}
+          />
+        )}
     </div>
+
   );
 };
 

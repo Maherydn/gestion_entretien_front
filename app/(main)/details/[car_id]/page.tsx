@@ -4,7 +4,7 @@ import ReminderMaintenance from "./_components/reminder/ReminderMaintenance";
 import Maintenance from "./_components/maintenance/Maintenance";
 import Header from "../../_components/Header";
 import { dataCarsFilter } from "@/app/utils/dataCarsFilter";
-import FloatingButton from "../.././_components/FloatingButton";
+import FloatingButton from "../../_components/FloatingButton";
 import Detail from "./_components/details/Detail";
 
 function Details() {
@@ -18,6 +18,10 @@ function Details() {
 
   const [showDetail, setShowDetail] = useState("hidden")
   const [showRappel, setShowRappel] = useState("hidden")
+
+  const actionToSetTitle = (immatriculation : string)=>{
+    setImmatriculation(immatriculation);
+  }
   
   const actionToShowDetail = () => {
     if (showDetail === "hidden"){
@@ -41,7 +45,7 @@ function Details() {
     { id: 1, name: "Rappels", action: actionToshowRappel },
     { id: 2, name: "Informations", action: actionToShowDetail  },
   ];
-  console.log(showDetail)
+  
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -59,13 +63,13 @@ function Details() {
   if (immatriculation === "") {
     return <p>Chargement des données...</p>;
   }
-
+  console.log(showDetail)
   return (
     <div className="w-full h-full flex gap-2 pt-7 md:px-2">
         <Header title="Détails" subTitle={immatriculation.toLocaleString()} listMenu={listMenu}/>
         <ReminderMaintenance show={showRappel}/>
         <Maintenance />
-        <Detail id={id-1} show={showDetail}/>
+        <Detail id={id-1} show={showDetail} setImTitle={actionToSetTitle}/>
       
     </div>
   );
