@@ -502,15 +502,25 @@ export default function App() {
     user.email.toLowerCase().includes(search.toLowerCase()) ||
     user.contact.toLowerCase().includes(search.toLowerCase())
   );
+
+  //ajout index
+  const dataWithIndex = dataFilter.map((item, index) => ({
+    ...item,
+    _index: index,
+  }));
+
+
   // 1. Calculer le nombre total de pages
-  const pages = Math.ceil(dataFilter.length / rowsPerPage);
+  const pages = Math.ceil(dataWithIndex.length / rowsPerPage);
 
   // 2. Extraire les données de la page actuelle
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return dataFilter.slice(start, end);
-  }, [page, dataFilter]);
+    return dataWithIndex.slice(start, end);
+  }, [page, dataWithIndex]);
+
+  console.log(dataWithIndex);
 
 
   return (
@@ -572,7 +582,7 @@ export default function App() {
       <TableBody items={items}>
         {(item) => (
           <TableRow key={item.id}>
-            {(columnKey) => <TableCell className={item.id%2 === 0? "":"bg-jaune"}>{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => <TableCell className={item._index % 2 === 0? "":"bg-jaune"}>{renderCell(item, columnKey)}</TableCell>}
           </TableRow>
         )}
       </TableBody>
