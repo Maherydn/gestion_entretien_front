@@ -491,15 +491,27 @@ export default function App() {
   const [page, setPage] = useState(1);
   const rowsPerPage = 20;
 
+  
+  // filtrer le donnee users
+  const [search, setSearch] = useState<string>('');
+  const dataFilter = users.filter(user =>
+    user.email.toLowerCase().includes(search.toLowerCase()) ||
+    user.nom.toLowerCase().includes(search.toLowerCase()) ||
+    user.prenom.toLowerCase().includes(search.toLowerCase()) ||
+    user.fonction.toLowerCase().includes(search.toLowerCase()) ||
+    user.email.toLowerCase().includes(search.toLowerCase()) ||
+    user.contact.toLowerCase().includes(search.toLowerCase())
+  );
   // 1. Calculer le nombre total de pages
-  const pages = Math.ceil(users.length / rowsPerPage);
+  const pages = Math.ceil(dataFilter.length / rowsPerPage);
 
   // 2. Extraire les données de la page actuelle
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return users.slice(start, end);
-  }, [page, users]);
+    return dataFilter.slice(start, end);
+  }, [page, dataFilter]);
+
 
   return (
     <Table 
@@ -539,8 +551,8 @@ export default function App() {
             <div className="max-sm:flex sm:flex-2 flex-col w-full bg-jaune">
                     <input
                         type="text"
-                        // value={value}
-                        // onChange={onChange}
+                        value={search}
+                        onChange={(e) =>  setSearch(e.target.value)}
                         className="bg-white w-full h-10 rounded-sm px-4 border "
                         placeholder="recherche...."
                     />
