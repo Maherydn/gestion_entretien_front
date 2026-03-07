@@ -18,26 +18,26 @@ import Administrateur from "./_administrateur/page";
 // ---- Page principale ---- //
 export default function Main() {
 
-  const [log, setLog] = useState("Administrateur")
+  const [log, setLog] = useState("Gerant")
 
   if (log === "Gerant"){
     return (
     <div className="w-full flex md:px-6 flex-col gap-8 relative">
-      <Gerant  user="Gerant"/>
+      <Gerant  user={log}/>
     </div>
   );
   }
   if (log === "Chauffeur") {
     return (
     <div className="w-full flex md:px-6 flex-col gap-8 relative">
-      <HomePage user="Chauffeur"/>
+      <HomePage user={log}/>
     </div>
   );
   }
    if (log === "Administrateur") {
     return (
     <div className="w-full flex md:px-6 flex-col gap-8 relative items-center">
-      <Administrateur />
+      <Administrateur user={log}/>
     </div>
   );
   }

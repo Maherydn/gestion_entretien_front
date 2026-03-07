@@ -1,10 +1,11 @@
-import { Car } from "./type";
+import { Car, Rappel, UserFonction, UserStatus, UserTeam } from "./type";
+import { User } from "./type";
 
 export const cars: Car[] = [
   {
     id: 1,
     immatriculation: "1111 TCA",
-    kilometrage: 150000,
+    kilometrage: 15000,
     visiteTechnique: "2025-01-22",
     assurance: "2025-01-23",
     etat: "En service",
@@ -109,4 +110,140 @@ export const cars: Car[] = [
     carType: { id: 2, type: "Berline" },
     fuel: { id: 1, type: "Essence", conso: 5 },
   },
+];
+
+
+// export const userFonctionData: UserFonction[] = [
+//   {
+//     id:0,
+//     label:'Chauffeur',
+//     description:'Chauffeur' 
+//   }
+// ]
+
+export const userFonctionData: UserFonction[] = [
+  {
+    id:0,
+    label:'Chauffeur',
+    desc:'Chauffeur' 
+  },
+  {
+    id:1,
+    label:'Technicien',
+    desc:'Technicien' 
+  },
+  {
+    id:2,
+    label:'Gestionnaire',
+    desc:'Gestionnaire' 
+  },
+  {
+    id:3,
+    label:'Administrateur',
+    desc:'Administrateur' 
+  },
+]
+
+export const userStatutData: UserStatus[] = [
+  {
+    id: 0,
+    label: "active",
+    desc: "En service"
+  }
+]
+
+export const users: User[] = [
+  {
+    id: 0,
+    nom: "RAKOTONDRAMELO",
+    prenom: "Safidinandrasana Angelo",
+    date_naissance: new Date('2025-02-18'),
+    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    email: "tony.reichert@example.com",
+    contact: "0332203223",
+    fonction: userFonctionData[0],
+    status: userStatutData[0],
+    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    created_at : new Date('10-02-2026'),
+    adress: 'LOT 3 W5 T6',
+    mdp: "STRing0123",
+    permis: {num: "250T65", photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"}  
+  },
+  {
+    id: 1,
+    nom: "Je",
+    prenom: "Suis",
+    date_naissance: new Date('2025-02-18'),
+    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    email: "tony.reichert@example.com",
+    contact: "0332203223",
+    fonction: userFonctionData[1],
+    status: userStatutData[0],
+    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    created_at : new Date('10-02-2026'),
+    adress: 'LOT 3 W5 T6',
+    mdp: "STRing0123",
+    specialite: ['electricien', 'mecanicien'],
+  },
+  {
+    id: 2,
+    nom: "RAKOTONDRAMELO",
+    prenom: "Safidinandrasana Angelo",
+    date_naissance: new Date('2025-02-18'),
+    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    email: "tony.reichert@example.com",
+    contact: "0332203223",
+    fonction: userFonctionData[3],
+    status: userStatutData[0],
+    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    created_at : new Date('10-02-2026'),
+    adress: 'LOT 3 W5 T6',
+    mdp: "STRing0123",
+  },
+  {
+    id: 3,
+    nom: "RAKOTONDRAMELO",
+    prenom: "Safidinandrasana Angelo",
+    date_naissance: new Date('2025-02-18'),
+    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    email: "tony.reichert@example.com",
+    contact: "0332203223",
+    fonction: userFonctionData[3],
+    status: userStatutData[0],
+    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    created_at : new Date('10-02-2026'),
+    adress: 'LOT 3 W5 T6',
+    mdp: "STRing0123",
+  },
+];
+
+export const rappels: Rappel[] = [
+  {
+    id: 1,
+    note: "string",
+    designation: "string",
+    kilometrage: 250000,
+    son_panne: "string",
+    photo_panne: "string", 
+    created_at: new Date ,
+    id_user: 2,
+    id_vehicule: 2,
+    id_entretien: 2,
+  },
+  {
+    id: 2,
+    note: "string",
+    designation: "string",
+    kilometrage: 250000,
+    son_panne: "string",
+    photo_panne: "string", 
+    created_at: new Date ,
+    id_user: 2,
+    id_vehicule: 2,
+    id_entretien: 2,
+  }
 ];

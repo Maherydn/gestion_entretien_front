@@ -1,3 +1,5 @@
+import { Car } from "../../type";
+
 export interface Reminder {
   id: number;
   title: string;
@@ -5,6 +7,7 @@ export interface Reminder {
   selectedOptions? : string[];
   handleOptionChange? : (event: React.ChangeEvent<HTMLInputElement>)=>void;
   reminderSelected? : Reminder;
+  selectedCar?: Car
 }
 
 export interface MaintenanceValue {

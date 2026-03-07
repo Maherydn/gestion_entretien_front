@@ -5,11 +5,13 @@ import { reminders } from '../../data';
 import ReminderItem from "./ReminderItem";
 import MaintenanceModal from "../modal/MaintenanceModal";
 import { Reminder } from '../../type';
+import { Car } from "@/app/(main)/type";
 
 interface reminderMaintenanceProps {
   show: string;
+  selectedCar: Car;
 }
-const ReminderMaintenance = ({ show }: reminderMaintenanceProps) => {
+const ReminderMaintenance = ({ show,selectedCar }: reminderMaintenanceProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
@@ -81,7 +83,7 @@ const ReminderMaintenance = ({ show }: reminderMaintenanceProps) => {
 
       <div className="w-full h-1/2 flex-1 overflow-y-auto space-y-6 px-2">
         {remindersTab.map((reminder, index) => (
-          <ReminderItem key={index} {...reminder}  handleOptionChange={handleOptionChange} selectedOptions = {selectedOptions} reminderSelected= {reminder}/>
+          <ReminderItem key={index} {...reminder}  handleOptionChange={handleOptionChange} selectedOptions = {selectedOptions} reminderSelected= {reminder} selectedCar = {selectedCar}/>
         ))}
       </div>
       

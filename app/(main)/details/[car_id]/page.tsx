@@ -6,11 +6,14 @@ import Header from "../../_components/Header";
 import { dataCarsFilter } from "@/app/utils/dataCarsFilter";
 import FloatingButton from "../../_components/FloatingButton";
 import Detail from "./_components/details/Detail";
+import { Car } from '../../type';
+import { cars } from '../../data';
 
 function Details() {
   // État pour stocker les données récupérées
   const [immatriculation, setImmatriculation] = useState("");
-  const [id, setId] = useState(1);
+  const [id, setId] = useState(0);
+  const [selectedCar, setSelectedCar] = useState<Car>(cars[id]);
   // État pour gérer l'état de chargement
   // const [isLoading, setIsLoading] = useState(true);
   // État pour gérer les erreurs
@@ -50,15 +53,17 @@ function Details() {
     const urlParams = new URLSearchParams(window.location.search);
 
     const im = urlParams.get('im');
-    const idParams = urlParams.get('id');
+    const idParams = Number(urlParams.get('id'))-1;
     if (im) {
       setImmatriculation(im);
     }
     if (idParams){
       setId(Number(idParams));
+      setSelectedCar(cars[Number(idParams)])
     }
+    console.log(selectedCar)
     // Appeler la fonction de récupération des données
-  }, []); // Le tableau vide assure que le `useEffect` ne s'exécute qu'une seule fois
+  }, [selectedCar]); // Le tableau vide assure que le `useEffect` ne s'exécute qu'une seule fois
 
   if (immatriculation === "") {
     return <p>Chargement des données...</p>;
@@ -67,66 +72,13 @@ function Details() {
   return (
     <div className="w-full h-full flex gap-2 pt-7 md:px-2">
         <Header title="Détails" subTitle={immatriculation.toLocaleString()} listMenu={listMenu}/>
-        <ReminderMaintenance show={showRappel}/>
+        <ReminderMaintenance show={showRappel} selectedCar = {selectedCar}/>
         <Maintenance />
-        <Detail id={id-1} show={showDetail} setImTitle={actionToSetTitle}/>
-      
+        <Detail id={id} show={showDetail} setImTitle={actionToSetTitle} selectedCardProp={selectedCar}/>
+
     </div>
   );
 }
 
 export default Details;
 
-
-
-
-
-// import ReminderMaintenance from "./_components/reminder/ReminderMaintenance";
-// import Maintenance from "./_components/maintenance/Maintenance";
-// import Header from "../../_components/Header";
-// import { dataCarsFilter } from "@/app/utils/dataCarsFilter";
-// import FloatingButton from "../.././_components/FloatingButton";
-// import Detail from "./_components/details/Detail";
-
-
-// interface DetailsProps {
-//     params: Promise<{
-//       details: any;
-//       car_id: any;
-//       id: string;
-//     }>;
-//     searchParams: Promise<Record<string,string | string[]>>;
-//   }
-
-// const Details: React.FC<DetailsProps> = async (props) => {
-//   // const params = await props.params;
-//   const searchParams = await props.searchParams;
-//   //const imageUrl = "/images/fond_login.webp";
-
-//   // console.log(params);
-//   // console.log (searchParams);
-//   const selectedCarIndex = (await props.params).car_id;
-  
-//   // console.log(selectedCar);
-
-//   // const [show, setShow] = useState("hidden")
-  
-//   // const showMenu = () => {
-//   //     setShow( show === "hidden"? "visible" : "hidden")
-//   //   }
-  
-  
-//   return (
-//     <div className="w-full h-[calc(100vh-96px)] flex gap-2 pt-10">
-//       <Header title="Détails" subTitle={searchParams.im.toLocaleString()} listMenu={[]}/>
-//       <ReminderMaintenance/>
-//       <Maintenance />
-//       <Detail id={selectedCarIndex}/>
-//       <div className="fixed bottom-5 max-lg:right-5 right-80 p-4">
-//         <FloatingButton />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Details;

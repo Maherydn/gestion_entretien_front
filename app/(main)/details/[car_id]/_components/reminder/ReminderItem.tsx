@@ -5,7 +5,7 @@ import ReminderDetailModal from "./ReminderDetailModal";
 import { useState } from "react";
 // import { reminders } from '../../data';
 
-const ReminderItem = ({ id, title, value, handleOptionChange,selectedOptions,reminderSelected  }: Reminder) => {
+const ReminderItem = ({ id, title, value, handleOptionChange,selectedOptions,reminderSelected,selectedCar  }: Reminder) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   return (
   <div className="flex items-center justify-between h-12 ">
@@ -40,6 +40,7 @@ const ReminderItem = ({ id, title, value, handleOptionChange,selectedOptions,rem
           onClose={() => setOpenModal(false)}
           reminderSelected = {reminderSelected}
           // submitReminder = {removeSelectedReminders}
+          selectedCar = {selectedCar}
         />
       )}
   </div>

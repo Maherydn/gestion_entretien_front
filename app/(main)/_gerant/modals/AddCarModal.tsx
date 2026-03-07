@@ -1,36 +1,69 @@
+import { ReactElement, useEffect, useState } from "react";
 import { Car } from "../../type";
-import AddCarForm from "../formulaires/AddCarForm";
-
+import AddCarForm from '../formulaires/AddCarForm';
+import AddUserForm from "../../_administrateur/_components/formulaires/AddUserForm";
+import {User} from "@heroui/react";
 interface AddCarModalProps {
   isOpen: boolean;
   onClose: () => void;
+  user: string;
   selectedCar?: Car;
-  setCars: (values: Car) => void;
+  selectedUser?: typeof User;
+  setCars?: (values: Car) => void;
   cars?: Car[];
   setImTitle?: (immatriculation : string)=> void;
+  modalIndex?: string
 }
+
 
 const AddCarModal: React.FC<AddCarModalProps> = ({
   isOpen,
   onClose,
   selectedCar,
+  user,
   setCars,
   cars,
-  setImTitle
+  setImTitle,
+  selectedUser,
+  modalIndex
 }) => {
+  const [modalTitle,setModalTitle] = useState<string>('')
+  const [modalForm,setModalForm] = useState<ReactElement>()
+  useEffect(() => {
+      switch (user) {
+      case "Gerant":
+        if (typeof selectedCar !== 'undefined'){
+          setModalTitle("Modifier le vehicule no:  " + selectedCar.immatriculation)
+        }
+        else   
+          setModalTitle("Ajout d'une nouvelle voiture")
+        setModalForm(<AddCarForm selectedCar = {selectedCar} onClose={onClose} setCars={setCars} cars={cars} setImTitle={setImTitle}/>)
+        break;
+      case "Administrateur":
+        if (selectedUser !== undefined){
+          setModalTitle("Modification des informations de " +selectedUser.nom)
+          setModalForm(<AddUserForm onClose={onClose} selectedUser={selectedUser}/>)
+        }else{
+          setModalTitle("Ajout d'un nouvel utilisateur")
+          setModalForm(<AddUserForm onClose={onClose}/>)
+        }
+        break;
+      default:
+        break;
+    }
+  }, [cars, onClose, selectedCar, setCars, setImTitle, user,selectedUser]); // Optional dependency array
   return (
     <dialog
       open={isOpen}
       onClose={onClose}
-      className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 h-screen w-full"
+      className="fixed inset-0 flex items-center justify-center z-100 bg-black/50 h-screen w-full"
+      id={modalIndex || ''}
     >
-      <div className="bg-white rounded-lg shadow-md w-fullshadow-lg p-6 w-1/2 h-1/2 dark:bg-slate-100 flex flex-col">
+      <div className="bg-white rounded-lg shadow-md w-fullshadow-lg p-6  h-8/12 dark:bg-slate-100 flex flex-col">
         <div className="flex justify-between w-full shadow-md mb-4">
           <h2 className="text-lg font-semibold m-4">
             {
-              (typeof selectedCar !== 'undefined')?
-                "Modifier le vehicule no:  " + selectedCar.immatriculation :
-                "Ajout d'une nouvelle voiture"
+              modalTitle
             }
             
           </h2>
@@ -42,8 +75,8 @@ const AddCarModal: React.FC<AddCarModalProps> = ({
           </button>
           
         </div>
+        {modalForm}
         
-        <AddCarForm selectedCar = {selectedCar} onClose={onClose} setCars={setCars} cars={cars} setImTitle={setImTitle}/>
 
         {/* <button 
           className="absolute top-[0%] right-[0%]  px-3 py-1 text-white text-xl font-bold rounded-full cursor-pointer"

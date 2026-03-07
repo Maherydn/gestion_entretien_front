@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type {SVGProps} from "react";
 import type {ChipProps} from "@heroui/react";
 import {
@@ -9,20 +9,21 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  User,
   Chip,
   Tooltip,
   Pagination 
 } from "@heroui/react";
 import FloatingButton from "@/app/(main)/_components/FloatingButton";
-
-export type IconSvgProps = SVGProps<SVGSVGElement> & {
-  size?: number;
-};
+import AddCarModal from "@/app/(main)/_gerant/modals/AddCarModal";
+import DetailUserModal from "../_user/detailModal";
+import SupprModal from "@/app/(main)/_components/supprModal";
+import { User } from "../../../type";
+import { users } from "../../../data";
+import { DeleteIcon, EditIcon, EyeIcon } from "@/app/(main)/_assets/icon";
 
 export const columns = [
   {name: "NOM", uid: "nom"},
-  // {name: "PRENOM", uid: "prenom"},
+  {name: "DATE DE NAISSANCE", uid: "date_naissance"},
   {name: "FONCTION", uid: "fonction"},
   {name: "CONTACT", uid: "contact"},
   {name: "EMAIL", uid: "email"},
@@ -30,402 +31,43 @@ export const columns = [
   {name: "ACTIONS", uid: "actions"},
 ];
 
-export const users = [
-  {
-    id: 1,
-    nom: "RAKOTONDRAMELO",
-    prenom: "Safidinandrasana Angelo",
-    fonction: "CEO",
-    team: "Management",
-    status: "active",
-    age: "29",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    email: "tony.reichert@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 2,
-    nom: "Zoey Lang",
-    prenom: "Albert",
-    fonction: "Technical Lead",
-    team: "Development",
-    status: "paused",
-    age: "25",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    email: "zoey.lang@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 3,
-    nom: "Jane Fisher",
-    prenom: "Albert",
-    fonction: "Senior Developer",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    email: "jane.fisher@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 4,
-    nom: "William Howard",
-    prenom: "Albert",
-    fonction: "Community Manager",
-    team: "Marketing",
-    status: "vacation",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    email: "william.howard@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 5,
-    nom: "Kristen Copper",
-    prenom: "Albert",
-    fonction: "Sales Manager",
-    team: "Sales",
-    status: "active",
-    age: "24",
-    avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-    email: "kristen.cooper@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 6,
-    nom: "RAKOTONDRAMELO",
-    prenom: "Safidinandrasana Angelo",
-    fonction: "CEO",
-    team: "Management",
-    status: "active",
-    age: "29",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    email: "tony.reichert@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 7,
-    nom: "Zoey Lang",
-    prenom: "Albert",
-    fonction: "Technical Lead",
-    team: "Development",
-    status: "paused",
-    age: "25",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    email: "zoey.lang@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 8,
-    nom: "Jane Fisher",
-    prenom: "Albert",
-    fonction: "Senior Developer",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    email: "jane.fisher@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 9,
-    nom: "William Howard",
-    prenom: "Albert",
-    fonction: "Community Manager",
-    team: "Marketing",
-    status: "vacation",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    email: "william.howard@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 10,
-    nom: "Kristen Copper",
-    prenom: "Albert",
-    fonction: "Sales Manager",
-    team: "Sales",
-    status: "active",
-    age: "24",
-    avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-    email: "kristen.cooper@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 11,
-    nom: "Zoey Lang",
-    prenom: "Albert",
-    fonction: "Technical Lead",
-    team: "Development",
-    status: "paused",
-    age: "25",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    email: "zoey.lang@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 12,
-    nom: "Jane Fisher",
-    prenom: "Albert",
-    fonction: "Senior Developer",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    email: "jane.fisher@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 13,
-    nom: "William Howard",
-    prenom: "Albert",
-    fonction: "Community Manager",
-    team: "Marketing",
-    status: "vacation",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    email: "william.howard@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 14,
-    nom: "Kristen Copper",
-    prenom: "Albert",
-    fonction: "Sales Manager",
-    team: "Sales",
-    status: "active",
-    age: "24",
-    avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-    email: "kristen.cooper@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 15,
-    nom: "Zoey Lang",
-    prenom: "Albert",
-    fonction: "Technical Lead",
-    team: "Development",
-    status: "paused",
-    age: "25",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    email: "zoey.lang@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 16,
-    nom: "Jane Fisher",
-    prenom: "Albert",
-    fonction: "Senior Developer",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    email: "jane.fisher@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 17,
-    nom: "William Howard",
-    prenom: "Albert",
-    fonction: "Community Manager",
-    team: "Marketing",
-    status: "vacation",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    email: "william.howard@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 18,
-    nom: "Kristen Copper",
-    prenom: "Albert",
-    fonction: "Sales Manager",
-    team: "Sales",
-    status: "active",
-    age: "24",
-    avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-    email: "kristen.cooper@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 19,
-    nom: "Zoey Lang",
-    prenom: "Albert",
-    fonction: "Technical Lead",
-    team: "Development",
-    status: "paused",
-    age: "25",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    email: "zoey.lang@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 20,
-    nom: "Jane Fisher",
-    prenom: "Albert",
-    fonction: "Senior Developer",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    email: "jane.fisher@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 21,
-    nom: "William Howard",
-    prenom: "Albert",
-    fonction: "Community Manager",
-    team: "Marketing",
-    status: "vacation",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    email: "william.howard@example.com",
-    contact: "0332203223"
-  },
-  {
-    id: 22,
-    nom: "Kristen Copper",
-    prenom: "Albert",
-    fonction: "Sales Manager",
-    team: "Sales",
-    status: "active",
-    age: "24",
-    avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-    email: "kristen.cooper@example.com",
-    contact: "0332203223"
-  },
-];
 
-export const EyeIcon = (props: IconSvgProps) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 20 20"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M12.9833 10C12.9833 11.65 11.65 12.9833 10 12.9833C8.35 12.9833 7.01666 11.65 7.01666 10C7.01666 8.35 8.35 7.01666 10 7.01666C11.65 7.01666 12.9833 8.35 12.9833 10Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M9.99999 16.8916C12.9417 16.8916 15.6833 15.1583 17.5917 12.1583C18.3417 10.9833 18.3417 9.00831 17.5917 7.83331C15.6833 4.83331 12.9417 3.09998 9.99999 3.09998C7.05833 3.09998 4.31666 4.83331 2.40833 7.83331C1.65833 9.00831 1.65833 10.9833 2.40833 12.1583C4.31666 15.1583 7.05833 16.8916 9.99999 16.8916Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-    </svg>
-  );
-};
-
-export const DeleteIcon = (props: IconSvgProps) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 20 20"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M17.5 4.98332C14.725 4.70832 11.9333 4.56665 9.15 4.56665C7.5 4.56665 5.85 4.64998 4.2 4.81665L2.5 4.98332"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M7.08331 4.14169L7.26665 3.05002C7.39998 2.25835 7.49998 1.66669 8.90831 1.66669H11.0916C12.5 1.66669 12.6083 2.29169 12.7333 3.05835L12.9166 4.14169"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M15.7084 7.61664L15.1667 16.0083C15.075 17.3166 15 18.3333 12.675 18.3333H7.32502C5.00002 18.3333 4.92502 17.3166 4.83335 16.0083L4.29169 7.61664"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M8.60834 13.75H11.3833"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-      <path
-        d="M7.91669 10.4167H12.0834"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      />
-    </svg>
-  );
-};
-
-export const EditIcon = (props: IconSvgProps) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 20 20"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M11.05 3.00002L4.20835 10.2417C3.95002 10.5167 3.70002 11.0584 3.65002 11.4334L3.34169 14.1334C3.23335 15.1084 3.93335 15.775 4.90002 15.6084L7.58335 15.15C7.95835 15.0834 8.48335 14.8084 8.74168 14.525L15.5834 7.28335C16.7667 6.03335 17.3 4.60835 15.4583 2.86668C13.625 1.14168 12.2334 1.75002 11.05 3.00002Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={1.5}
-      />
-      <path
-        d="M9.90833 4.20831C10.2667 6.50831 12.1333 8.26665 14.45 8.49998"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={1.5}
-      />
-      <path
-        d="M2.5 18.3333H17.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeMiterlimit={10}
-        strokeWidth={1.5}
-      />
-    </svg>
-  );
-};
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
   paused: "danger",
   vacation: "warning",
 };
 
-type User = (typeof users)[0];
+// type User = (typeof users)[0];
 
-export default function App() {
+interface TableauProps{
+  editUser : ()=>void;
+  _user_: string
+}
+
+
+export default function Tableau( {editUser, _user_}: TableauProps ) {
+
+
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User>()
+  const actionToOpenEditModal = (user:User) =>{
+    setSelectedUser(user)
+    setOpenEditModal(true)
+  }
+
+  const [openProfilModal, setOpenProfilModal] = useState<boolean>(false);
+  const actionToOpenProfilModal = (user:User) => {
+    setSelectedUser(user)
+    setOpenProfilModal(true)
+  }
+
+  const [openSupprModal, setopenSupprModal] = useState<boolean>(false);
+  const actionToOpenSupprModal = (user:User) => {
+    setSelectedUser(user)
+    setopenSupprModal(true)
+  }
+
   const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof User];
 
@@ -435,20 +77,27 @@ export default function App() {
           <div className="flex flex-col">
             <p className="text-bold text-sm capitalize">{cellValue}</p>
             <p className="text-bold text-sm capitalize text-default-400">{user.prenom}</p>
-
           </div>
         );
-      // case "prenom":
-      //   return (
-      //     <div className="flex flex-col">
-      //       <p className="text-bold text-sm capitalize">{cellValue}</p>
-      //     </div>
-      //   );
+      case "date_naissance":
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-sm capitalize">
+            {
+              new Intl.DateTimeFormat('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'UTC',
+              }).format(cellValue)
+            }</p>
+          </div>
+        );
       case "fonction":
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize">{cellValue}</p>
-            <p className="text-bold text-sm capitalize text-default-400">{user.team}</p>
+            <p className="text-bold text-sm capitalize">{cellValue?.desc}</p>
+            <p className="text-bold text-sm capitalize text-default-400">{user.specialite!==undefined ? user.specialite[0]:""}</p>
           </div>
         );
       case "contact":
@@ -459,25 +108,25 @@ export default function App() {
         );
       case "status":
         return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
+          <Chip className="capitalize" color={statusColorMap[user.status.desc]} size="sm" variant="flat">
+            {cellValue.description}
           </Chip>
         );
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={()=>actionToOpenProfilModal(user)}>
                 <EyeIcon />
               </span>
             </Tooltip>
             <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={()=>actionToOpenEditModal(user)}>
                 <EditIcon />
-              </span>
+              </span> 
             </Tooltip>
             <Tooltip color="danger" content="Delete user">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={()=>actionToOpenSupprModal(user)}>
                 <DeleteIcon />
               </span>
             </Tooltip>
@@ -498,7 +147,7 @@ export default function App() {
     user.email.toLowerCase().includes(search.toLowerCase()) ||
     user.nom.toLowerCase().includes(search.toLowerCase()) ||
     user.prenom.toLowerCase().includes(search.toLowerCase()) ||
-    user.fonction.toLowerCase().includes(search.toLowerCase()) ||
+    user.fonction.description.toLowerCase().includes(search.toLowerCase()) ||
     user.email.toLowerCase().includes(search.toLowerCase()) ||
     user.contact.toLowerCase().includes(search.toLowerCase())
   );
@@ -520,11 +169,12 @@ export default function App() {
     return dataWithIndex.slice(start, end);
   }, [page, dataWithIndex]);
 
-  console.log(dataWithIndex);
+  // console.log(dataWithIndex);
 
 
   return (
-    <Table 
+    <>
+      <Table 
       classNames={{
         wrapper: "text-left ", // Couleur du conteneur
         thead: "text-black text-left", // En-tête
@@ -587,5 +237,21 @@ export default function App() {
         )}
       </TableBody>
     </Table>
+
+    {
+      selectedUser === undefined ?
+        openEditModal && (<AddCarModal isOpen={openEditModal} onClose={() => setOpenEditModal(false)} user={_user_}/>)
+        :
+        openEditModal && (<AddCarModal isOpen={openEditModal} onClose={() => setOpenEditModal(false)} user={_user_} selectedUser={selectedUser}/>)
+    }
+    {_user_ === "Administrateur" ?
+          openProfilModal && (<DetailUserModal isOpen={openProfilModal} onClose={() => setOpenProfilModal(false)} selectedUser={selectedUser} user={_user_}/>) 
+          : ""
+    }
+    {_user_ === "Administrateur" ?
+          openSupprModal && (<SupprModal isOpen={openSupprModal} onClose={() => setopenSupprModal(false)} selectedUser={selectedUser} user={_user_}/>) 
+          : ""
+    }
+    </>
   );
 }

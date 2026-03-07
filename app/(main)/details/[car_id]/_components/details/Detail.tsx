@@ -5,11 +5,13 @@ import DetailModal  from "./detailModal/detailModal";
 import {useState} from 'react';
 import AddCarModal from "@/app/(main)/_gerant/modals/AddCarModal";
 import { Car } from "@/app/(main)/type";
+import SupprModal from "@/app/(main)/_components/supprModal";
 
 interface SelectedCardProps {
     id: number;
     show : string;
     setImTitle?: (immatriculation: string ) => void;
+    selectedCardProp : Car
 }
 interface SelectedCard{
   icon : string;
@@ -37,14 +39,20 @@ const rowDetailCar = (icon:string,title:string|null|undefined,value:string|null|
   );
 }
 const Detail = ({
-    id,show,setImTitle
+    id,show,setImTitle,selectedCardProp
   }: SelectedCardProps) => {
-    const [selectedCar, setSelectedCar] = useState<Car>(cars[id]);
+    // const [selectedCar, setSelectedCar] = useState<Car>(cars[id]);
+    const [selectedCar, setSelectedCar] = useState<Car>(selectedCardProp);
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [openModifyModal, setOpenModifyModal] = useState<boolean>(false);
 
     const updateSelectCar = (updatedCar: Car) => {
       setSelectedCar(updatedCar)
+    }
+    const [openSupprModal, setopenSupprModal] = useState<boolean>(false);
+    const actionToOpenSupprModal = () => {
+      // setSelectedUser(user)
+      setopenSupprModal(true)
     }
   return (
     // <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 md:shadow-jaune shadow-lg 
@@ -54,7 +62,7 @@ const Detail = ({
     // `}>
       <div className={`flex-1 bg-jaune flex flex-col items-center gap-6 pt-4 shadow-jaune shadow-lg 
       max-md:${show} fixed max-md:top-18 w-[25%] max-w-lg max-sm:w-screen max-md:px-5 h-[90%] right-0
-      z-20
+      z-00
     `}>  
         <div className="w-full h-1/5 flex items-center justify-center">
           {selectedCar.imageUrl ? (
@@ -115,7 +123,7 @@ const Detail = ({
             
             Modifier
           </button>
-          <button className="w-full bg-rouge py-1  font-semibold cursor-pointer ">
+          <button className="w-full bg-rouge py-1  font-semibold cursor-pointer " onClick={actionToOpenSupprModal}>
             Supprimer
           </button>
         </div>
@@ -134,9 +142,13 @@ const Detail = ({
             selectedCar = {selectedCar}
             setCars={updateSelectCar}
             setImTitle = {setImTitle}
+            user="Gerant"
             // submitReminder = {removeSelectedReminders}
           />
         )}
+        {
+          openSupprModal && (<SupprModal isOpen={openSupprModal} onClose={() => setopenSupprModal(false)} selectedCar={selectedCar} user='Gerant'/>) 
+        }
     </div>
 
   );

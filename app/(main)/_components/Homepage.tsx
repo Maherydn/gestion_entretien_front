@@ -95,7 +95,7 @@ export default function HomePage({user}: HomePageProps) {
           <FloatingButton />
         </div> */}
         {user === "Gerant" ? 
-            openModal && (<AddCarModal isOpen={openModal} onClose={() => setOpenModal(false)} setCars = {carsStatesUpdate} cars={carStates} />
+            openModal && (<AddCarModal isOpen={openModal} onClose={() => setOpenModal(false)} setCars = {carsStatesUpdate} cars={carStates} user={user}/>
             ) : ""
         }
         </div>

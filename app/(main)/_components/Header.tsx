@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { BurgerIcon } from "../_assets/icon";
 import Menu from "./Menu";
+import DetailUserModal from "../_administrateur/_components/_user/detailModal";
+import { users } from "../data";
 interface HeaderProps{
   title?: string;
   subTitle?: string;
@@ -19,6 +21,10 @@ const Header = (
   const showMenu = () => {
     setShow( show === "hidden"? "visible" : "hidden")
   }
+  const [openProfilModal, setOpenProfilModal] = useState<boolean>(false);
+  const actionToOpenProfilModal = () => {
+    setOpenProfilModal(true)
+  }
   return (
     <header className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full bg-vert z-100">
       <div className="flex w-full items-center justify-between h-full px-10 my-2">
@@ -34,7 +40,8 @@ const Header = (
             </p>
         </div>
       </div>
-      <Menu show={show} listMenu={listMenu}/>
+      <Menu show={show} listMenu={listMenu} showProfil = {actionToOpenProfilModal}/>
+      {openProfilModal && (<DetailUserModal isOpen={openProfilModal} onClose={() => setOpenProfilModal(false)} selectedUser={users[1]}/>) }
     </header>
   );
 };
