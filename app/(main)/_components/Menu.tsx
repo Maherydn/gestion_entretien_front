@@ -1,32 +1,49 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
 interface MenuProps {
-    show: string;
-    listMenu: {id: number, name: string, action: React.MouseEventHandler<HTMLButtonElement>}[];
-    showProfil: ()=> void;
+  show: string;
+  listMenu: {
+    id: number;
+    name: string;
+    action: React.MouseEventHandler<HTMLButtonElement>;
+  }[];
+  showProfil: () => void;
 }
 
-const Menu: React.FC<MenuProps> = ({show,listMenu,showProfil}) => {
-
+const Menu: React.FC<MenuProps> = ({ show, listMenu, showProfil }) => {
+  const router = useRouter();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.replace("/login");
+  };
   return (
-    <div className={`flex flex-col bg-vert  fixed opacity-90 hover:opacity-100 ${show}`}>
+    <div
+      className={`flex flex-col bg-vert  fixed opacity-90 hover:opacity-100 ${show}`}
+    >
       {/* Bloc Filtre */}
       {listMenu.map((list) => (
-        <button key={list.id} 
+        <button
+          key={list.id}
           className={`flex px-10 py-4 hover:bg-jaune text-xl max-md:text-lg font-bold text-white hover:text-black  cursor-pointer 
-            ${list.name=="Rappels"?"md:hidden":""} ${list.name=="Informations"?"md:hidden":""}`}
-          onClick={list.action} 
+            ${list.name == "Rappels" ? "md:hidden" : ""} ${list.name == "Informations" ? "md:hidden" : ""}`}
+          onClick={list.action}
         >
           {list.name}
         </button>
       ))}
-      <button className="flex px-10 py-4 hover:bg-jaune text-xl max-md:text-lg font-bold text-white hover:text-black  cursor-pointer" onClick={showProfil}>
+      <button
+        className="flex px-10 py-4 hover:bg-jaune text-xl max-md:text-lg font-bold text-white hover:text-black  cursor-pointer"
+        onClick={showProfil}
+      >
         Profil
       </button>
-      <button className="flex px-10 py-4 hover:bg-jaune text-xl max-md:text-lg font-bold text-white hover:text-black  cursor-pointer">
+      <button
+        className="flex px-10 py-4 hover:bg-jaune text-xl max-md:text-lg font-bold text-white hover:text-black  cursor-pointer"
+        onClick={handleLogout}
+      >
         Se déconnecter
       </button>
     </div>

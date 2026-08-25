@@ -157,3 +157,41 @@ export const EditIcon = (props: IconSvgProps) => {
     </svg>
   );
 };
+
+export const DownloadIcon = (props: IconSvgProps) => {
+  return (
+    <svg
+      width="64px"
+      height="64px"
+      viewBox="-4.56 -4.56 33.12 33.12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="#ffffff"
+      transform="rotate(0)"
+      {...props}
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="m8 12 4 4 4-4"
+          stroke="#ffffff"
+          strokeWidth="0.8879999999999999"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        ></path>
+        <path
+          d="M12 16V4M19 17v.6c0 1.33-1.07 2.4-2.4 2.4H7.4C6.07 20 5 18.93 5 17.6V17"
+          stroke="#ffffff"
+          strokeWidth="0.8879999999999999"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+        ></path>
+      </g>
+    </svg>
+  );
+};

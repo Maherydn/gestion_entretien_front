@@ -1,4 +1,12 @@
-import { Car, Rappel, UserFonction, UserStatus, UserTeam } from "./type";
+import {
+  Car,
+  CarType,
+  Fuel,
+  Rappel,
+  UserFonction,
+  UserStatus,
+  UserTeam,
+} from "./type";
 import { User } from "./type";
 
 export const cars: Car[] = [
@@ -8,11 +16,11 @@ export const cars: Car[] = [
     kilometrage: 15000,
     visiteTechnique: "2025-01-22",
     assurance: "2025-01-23",
-    etat: "En service",
+    etat: "active",
     imageUrl: "/images/photo_vehicules/bmwe30.jpg",
     carType: { id: 1, type: "Voiture" },
     fuel: { id: 1, type: "Essence", conso: 5 },
-    sit: 5
+    sit: 5,
   },
   {
     id: 2,
@@ -20,7 +28,7 @@ export const cars: Car[] = [
     kilometrage: 89000,
     visiteTechnique: "10/12/2024",
     assurance: "15/01/2025",
-    etat: "Hors service",
+    etat: "ACTIVE",
     imageUrl: "/images/photo_vehicules/cruze.jpg",
     sit: 5,
     carType: { id: 2, type: "Moto" },
@@ -32,7 +40,7 @@ export const cars: Car[] = [
     kilometrage: 45000,
     visiteTechnique: "05/06/2026",
     assurance: "05/06/2025",
-    etat: "En service",
+    etat: "REPAIR",
     imageUrl: "/images/photo_vehicules/sprinter.jpg",
     sit: 12,
     carType: { id: 3, type: "Avion" },
@@ -44,7 +52,7 @@ export const cars: Car[] = [
     kilometrage: 120000,
     visiteTechnique: "20/08/2025",
     assurance: "01/09/2025",
-    etat: "Hors service",
+    etat: "BROKEN",
     imageUrl: "/images/photo_vehicules/ToyotaPrado.jpg",
     sit: 7,
     carType: { id: 4, type: "Voiture" },
@@ -104,7 +112,7 @@ export const cars: Car[] = [
     kilometrage: 60000,
     visiteTechnique: "10/11/2025",
     assurance: "10/11/2025",
-    etat: "En service",
+    etat: "broken",
     imageUrl: "/images/photo_vehicules/Toyota_Rav4.jpg",
     sit: 5,
     carType: { id: 2, type: "Berline" },
@@ -112,112 +120,150 @@ export const cars: Car[] = [
   },
 ];
 
-
 // export const userFonctionData: UserFonction[] = [
 //   {
 //     id:0,
 //     label:'Chauffeur',
-//     description:'Chauffeur' 
+//     description:'Chauffeur'
 //   }
 // ]
 
 export const userFonctionData: UserFonction[] = [
   {
-    id:0,
-    label:'Chauffeur',
-    desc:'Chauffeur' 
+    id: 0,
+    label: "Chauffeur",
+    value: "DRIVER",
   },
   {
-    id:1,
-    label:'Technicien',
-    desc:'Technicien' 
+    id: 1,
+    label: "Technicien",
+    value: "TECHNICIAN",
   },
   {
-    id:2,
-    label:'Gestionnaire',
-    desc:'Gestionnaire' 
+    id: 2,
+    label: "Gestionnaire de flotte",
+    value: "FLEETMANAGEMENT",
   },
   {
-    id:3,
-    label:'Administrateur',
-    desc:'Administrateur' 
+    id: 3,
+    label: "Administrateur",
+    value: "ADMIN",
   },
-]
+];
 
 export const userStatutData: UserStatus[] = [
   {
     id: 0,
-    label: "active",
-    desc: "En service"
-  }
-]
+    label: "En service",
+    value: "ACTIVE",
+  },
+  {
+    id: 1,
+    label: "En conge",
+    value: "VACATION",
+  },
+  {
+    id: 2,
+    label: "En mission",
+    value: "AFFECT",
+  },
+];
+
+export const carTypesData: CarType[] = [
+  {
+    id: 0,
+    type: "autre",
+  },
+  {
+    id: 1,
+    type: "moto",
+  },
+  {
+    id: 2,
+    type: "voiture",
+  },
+];
+
+export const fuelTypesData: Fuel[] = [
+  {
+    id: 0,
+    type: "Diesel",
+    conso: 5,
+  },
+  {
+    id: 1,
+    type: "Essence",
+    conso: 5,
+  },
+  {
+    id: 2,
+    type: "Electrique",
+    conso: 5,
+  },
+  {
+    id: 3,
+    type: "Hybride",
+    conso: 5,
+  },
+];
 
 export const users: User[] = [
   {
     id: 0,
     nom: "RAKOTONDRAMELO",
     prenom: "Safidinandrasana Angelo",
-    date_naissance: new Date('2025-02-18'),
-    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    date_naissance: new Date("2025-02-18"),
+    num_cin: "101 241 155 000",
+    photo_cin: ["https://i.pravatar.cc/150?u=a042581f4e29026024d"],
     email: "tony.reichert@example.com",
     contact: "0332203223",
     fonction: userFonctionData[0],
     status: userStatutData[0],
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
     cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    created_at : new Date('10-02-2026'),
-    adress: 'LOT 3 W5 T6',
+    created_at: new Date("10-02-2026"),
+    adress: "LOT 3 W5 T6",
     mdp: "STRing0123",
-    permis: {num: "250T65", photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"}  
+    num_permis: "250T65",
+    photo_permis: ["https://i.pravatar.cc/150?u=a042581f4e29026024d"],
   },
   {
     id: 1,
-    nom: "Je",
-    prenom: "Suis",
-    date_naissance: new Date('2025-02-18'),
-    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    nom: "RAKOTONDRAMELO",
+    prenom: "Angelo",
+    date_naissance: new Date("2025-02-18"),
+    num_cin: "101 241 155 000",
+    photo_cin: ["https://i.pravatar.cc/150?u=a042581f4e29026024d"],
     email: "tony.reichert@example.com",
     contact: "0332203223",
-    fonction: userFonctionData[1],
-    status: userStatutData[0],
+    fonction: userFonctionData[2],
+    status: userStatutData[1],
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
     cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    created_at : new Date('10-02-2026'),
-    adress: 'LOT 3 W5 T6',
+    created_at: new Date("10-02-2026"),
+    adress: "LOT 3 W5 T6",
     mdp: "STRing0123",
-    specialite: ['electricien', 'mecanicien'],
+    num_permis: "250T65",
+    photo_permis: ["https://i.pravatar.cc/150?u=a042581f4e29026024d"],
   },
   {
     id: 2,
     nom: "RAKOTONDRAMELO",
-    prenom: "Safidinandrasana Angelo",
-    date_naissance: new Date('2025-02-18'),
-    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
+    prenom: "Safidinandrasana",
+    date_naissance: new Date("2025-02-18"),
+    num_cin: "101 241 155 000",
+    photo_cin: ["https://i.pravatar.cc/150?u=a042581f4e29026024d"],
     email: "tony.reichert@example.com",
     contact: "0332203223",
-    fonction: userFonctionData[3],
-    status: userStatutData[0],
+    fonction: userFonctionData[1],
+    status: userStatutData[2],
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
     cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    created_at : new Date('10-02-2026'),
-    adress: 'LOT 3 W5 T6',
+    created_at: new Date("10-02-2026"),
+    adress: "LOT 3 W5 T6",
     mdp: "STRing0123",
-  },
-  {
-    id: 3,
-    nom: "RAKOTONDRAMELO",
-    prenom: "Safidinandrasana Angelo",
-    date_naissance: new Date('2025-02-18'),
-    cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
-    email: "tony.reichert@example.com",
-    contact: "0332203223",
-    fonction: userFonctionData[3],
-    status: userStatutData[0],
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    created_at : new Date('10-02-2026'),
-    adress: 'LOT 3 W5 T6',
-    mdp: "STRing0123",
+    num_permis: "250T65",
+    photo_permis: ["https://i.pravatar.cc/150?u=a042581f4e29026024d"],
   },
 ];
 
@@ -228,8 +274,8 @@ export const rappels: Rappel[] = [
     designation: "string",
     kilometrage: 250000,
     son_panne: "string",
-    photo_panne: "string", 
-    created_at: new Date ,
+    photo_panne: "string",
+    created_at: new Date(),
     id_user: 2,
     id_vehicule: 2,
     id_entretien: 2,
@@ -240,10 +286,10 @@ export const rappels: Rappel[] = [
     designation: "string",
     kilometrage: 250000,
     son_panne: "string",
-    photo_panne: "string", 
-    created_at: new Date ,
+    photo_panne: "string",
+    created_at: new Date(),
     id_user: 2,
     id_vehicule: 2,
     id_entretien: 2,
-  }
+  },
 ];

@@ -8,7 +8,9 @@ import { cars } from '../data';
 import { dataCarsFilter } from "../../utils/dataCarsFilter";
 import Header from "../_components/Header";
 import AddCarModal from "../_gerant/modals/AddCarModal";
-import { Car } from "../type";
+import { Car, User } from "../type";
+import { fetcher } from "@/app/lib/fetcher";
+import useSWR from "swr";
 
 
 interface HomePageProps {
@@ -21,36 +23,33 @@ interface HomePageProps {
 // ---- Page principale ---- //
 export default function HomePage({user}: HomePageProps) {
 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}cars`;
+    const { data: cars = [], isLoading, mutate } = useSWR<Car[]>(url, fetcher);
     const [filters, setFilters] = useState({
         carType: "",
         fuel: "",
         search: "",
     });
 
-    const [carStates, setCars] = useState(cars)
-    const carsStatesUpdate = (newCar: Car) => {
-        carStates.push(newCar)
-        setCars(carStates)
-    }
-
+    console.log("Cars data:", cars);
+    const filteredCars = dataCarsFilter(cars, filters);
     const [show, setShow] = useState("hidden")
     const [showSuv, setShowSuv] = useState("Suv")
-
     const showFilter = () => {
         setShow( show === "hidden"? "visible" : "hidden")
     }
-
-    const filteredCars = dataCarsFilter(carStates, filters);
-
     const [listMenu, setListMenu] = useState([
         { id: 1, name: "Trier", action: showFilter },
     ]);
 
     const [openModal, setOpenModal] = useState<boolean>(false);
+
     useEffect(() => {
     const fetchData = async () => {
+        
         try {
-            if (user === "Gerant"){
+            if (user === "FLEETMANAGEMENT"){
+
                 const openAddCarModal = () => {
                     setOpenModal(true)
                 }
@@ -70,7 +69,7 @@ export default function HomePage({user}: HomePageProps) {
         };
 
         fetchData();
-    }, [show]);
+    }, [show, user]);
 
     return (
         <div className="w-full flex md:px-6 flex-col gap-8 relative">
@@ -78,24 +77,22 @@ export default function HomePage({user}: HomePageProps) {
             <CarFilter onChange={setFilters} show={show}/>
       
         <div className="w-full flex items-start md:justify-between  flex-wrap gap-6 px-5 justify-center">
-            {filteredCars.map((car) => (
+            {filteredCars.map((car, index) => (
             <CarCard
-                key={car.id}
-                id={car.id}
-                immatriculation={car.immatriculation}
-                kilometrage={car.kilometrage}
-                visiteTechnique={car.visiteTechnique}
-                assurance={car.assurance}
-                etat={car.etat}
-                imageUrl={car.imageUrl}
+                key={index}
+                id={index + 1 }
+                immatriculation={car.registrationNumber || 'N/A'}
+                kilometrage={car.odometer || 0}
+                visiteTechnique={car.technicalControlDate || 'N/A'}
+                assurance={car.assuranceDate || 'N/A'}
+                etat={car.availabilityStatus || 'ACTIVE'}
+                notif = {car.warning?.length || 0}
+                // imageUrl={car.imageUrl}
                 user = {user}
             />
         ))}
-        {/* <div className="fixed bottom-10 right-10 ">
-          <FloatingButton />
-        </div> */}
-        {user === "Gerant" ? 
-            openModal && (<AddCarModal isOpen={openModal} onClose={() => setOpenModal(false)} setCars = {carsStatesUpdate} cars={carStates} user={user}/>
+        {user === "FLEETMANAGEMENT" ? 
+            openModal && (<AddCarModal isOpen={openModal} onClose={() => setOpenModal(false)}  user={user}/>
             ) : ""
         }
         </div>

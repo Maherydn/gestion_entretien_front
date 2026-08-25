@@ -8,135 +8,212 @@ export interface Fuel {
   type: string;
   conso: number;
 }
-export interface GenreVehicule{
+export interface GenreVehicule {
   id: number;
   label: string;
 }
-export interface Assurance{
+
+export interface Nif {
   id: number;
-  date: Date;
-  file: string;
-  price: number;
-  durabilty: number;
-  agence: string;
+  registrationNumber?: number;
+  frontPicture?: string;
+  backPicture?: string;
+  // durability?: number; // nombre de mois
+  // price?: number; // chiffre en ariary
+  // releaseDate?: Date; // date de paiement
+  car?: Car;
+  stat?: Stat;
+  createdAt?: Date;
 }
-export interface VisiteTechnique{
+export interface Stat {
   id: number;
-  date: Date;
-  file: string;
-  price: number;
-  durabilty: number;
-  agence: string;
+  registrationNumber?: number;
+  frontPicture?: string;
+  backPicture?: string;
+  nif?: Nif[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-export interface Nif{
+export interface RegistrationCard {
   id: number;
-  date: Date;
-  file: string;
-  price: number;
-  durabilty: number;
-  agence: string;
-  stat: {num: number, file: string}
+  registrationNumber?: number;
+  frontPicture?: string;
+  backPicture?: string;
+  car?: Car;
+  createdAt?: Date;
+}
+
+export interface TechnicalControl {
+  id: number;
+  frontPicture?: string;
+  backPicture?: string;
+  car?: Car;
+  createdAt?: Date;
 }
 export interface Car {
+  type: string;
+  // nombre de places
+  seats?: number;
+  // kilométrage
+  odometer?: number;
+  // immatriculation
+  registrationNumber?: string;
+  // année de sortie
+  releaseDate?: Date;
+  // numéro de chassis
+  chassisNumber?: string;
+  // puissance fiscale
+  fiscalPower?: number;
+  // type de boîte de vitesse
+  transmissionType?: string;
+  // nombre de portes
+  numberOfDoors?: number;
+  // couleur
+  color?: string;
+  // marque
+  brand?: string;
+  // modèle
+  model?: string;
+  // type de carrosserie
+  bodyType?: string;
+  // type de motorisation
+  engineType?: string;
+  // capacité du coffre
+  trunkCapacity?: number; // -----------------------------
+  // consommation moyenne
+  averageConsumption?: number;
+  // type d'achat
+  purchaseType?: string;
+  // prix d'achat
+  purchasePrice?: number;
+  // disponibilité
+  availabilityStatus?: string;
+  // photo de la voiture
+  photoCarPath?: string;
+  assuranceDate?: string;
+  technicalControlDate?: string;
+  warning ?: Rappel[];
+  /**
+   * Date de création
+   */
+  createdAt?: Date;
+  /**
+   * Date de modification
+   */
+  updatedAt?: Date;
+  assurances?: Assurance[];
+  nif?: Nif;
+  registrationCard?: RegistrationCard;
+  technicalControl?: TechnicalControl;
+}
+
+export interface Assurance {
   id: number;
-  immatriculation: string;
-  annee_mise_circulation: Date;
-  num_chassis?: string;
-  sit: number;
-  kilometrage: number;
-  marque: string;
-  created_at: Date;
-  statut: string;
-  imageUrl?: string;
-  carte_grise: string;
-  visite_technique: VisiteTechnique;
-  assurance: Assurance;
-  nif: Nif;
-  carType?: CarType;
-  fuel: Fuel;
-  genre: GenreVehicule;
-  id_user: number;
+  // durabilty?: string;
+  // price?: number;
+  // agence?: string;
+  frontPicture?: string;
+  backPicture?: string;
+  // durability?: number; // nombre de mois
+  // releaseDate?: Date; // date de paiement
+  // beginDate?: Date; // date de debut de validite
+  createdAt?: Date;
+  updatedAt?: Date;
+  car?: Car;
 }
 
 export interface UserStatus {
-  id: number,
-  label: string,
-  desc: string
+  id: number;
+  label: string;
+  value: string;
+  description?: string;
 }
 export interface UserTeam {
-  id: number,
-  label: string,
-  desc: string,
+  id: number;
+  label: string;
+  desc: string;
 }
 export interface UserFonction {
-  id: number,
-  label: string,
-  desc: string
+  id: number;
+  label: string;
+  value: string;
 }
 export interface User {
-  id: number,
-  nom: string,
-  prenom: string,
-  date_naissance: Date,
-  cin: {num:string, photo: string},
-  email: string,
-  contact: string,
-  fonction: UserFonction,
-  status: UserStatus,
-  avatar: string,
-  cv: string,
-  created_at : Date,
-  adress: string,
-  mdp: string,
-  specialite?: string[],
-  permis?: {num: string, photo: string}
-  modify_at?: Date
+  id: number;
+  name: string;
+  firstName: string;
+  birthday: string;
+  email: string;
+  contact: string;
+  adress: string;
+  password: string;
+  acces: boolean;
+  profil?: File;
+  speciality?: string;
+  role: string;
+  status: string;
+  profilPath?: string;
+  cv?: { filePath?: string; created_at?: Date; id?: number }[];
+  cin?: {
+    num?: string;
+    frontPicture?: string;
+    backPicture?: string;
+    created_at?: Date;
+    id?: number;
+  };
+  drivingLicense?: {
+    num?: string;
+    frontPicture?: string;
+    backPicture?: string;
+    created_at?: Date;
+    id?: number;
+  };
 }
 
 export interface StatutRappel {
-  id : number,
-  desc : string
+  id: number;
+  desc: string;
 }
-export interface GenreRappel{ 
-  id: number,
-  desc: string
+export interface GenreRappel {
+  id: number;
+  desc: string;
 }
-export interface TypeRappel { 
-  id: number,
-  label: string,
-  desc: string,
-  genre: string,
+export interface TypeRappel {
+  id: number;
+  label: string;
+  desc: string;
+  genre: string;
 }
 export interface Rappel {
-  id: number,
-  note: string,
-  designation: string,
-  kilometrage: number,
-  son_panne?: string,
-  photo_panne?: string, 
-  created_at:Date,
-  id_user: number,
-  id_vehicule: number,
-  id_entretien?: number,
-  statut?: StatutRappel,
-  type?: TypeRappel, 
+  id: number;
+  note: string;
+  designation: string;
+  kilometrage: number;
+  son_panne?: string;
+  photo_panne?: string;
+  created_at: Date;
+  id_user: number;
+  id_vehicule: number;
+  id_entretien?: number;
+  statut?: StatutRappel;
+  type?: TypeRappel;
 }
-export interface Garage { 
-  id: number,
-  nom: string,
-  specialite: string,
-  localisation: string,
+export interface Garage {
+  id: number;
+  nom: string;
+  specialite: string;
+  localisation: string;
 }
-export interface Validation { 
-  id: number,
-  desc: string,
+export interface Validation {
+  id: number;
+  desc: string;
 }
-export interface Entretien { 
-  id : number,
-  garage? : Garage,
-  chef_atelier: User,
-  price? : number,
-  notes? : string,
-  created_at: Date, 
-  validation?: Validation
+export interface Entretien {
+  id: number;
+  garage?: Garage;
+  chef_atelier: User;
+  price?: number;
+  notes?: string;
+  created_at: Date;
+  validation?: Validation;
 }

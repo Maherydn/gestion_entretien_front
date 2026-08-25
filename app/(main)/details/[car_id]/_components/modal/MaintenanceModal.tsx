@@ -1,3 +1,4 @@
+import { Car } from "@/app/(main)/type";
 import { Reminder } from "../../type";
 import ListForm from "./MaintenanceForm";
 
@@ -6,13 +7,15 @@ interface MaintenanceModalProps {
   onClose: () => void;
   reminders : Reminder[];
   submitReminder : (id: unknown) => void;
+  selectedCar : Car;
 }
 
 const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
   isOpen,
   onClose,
   reminders,
-  submitReminder
+  submitReminder,
+  selectedCar
 }) => {
   return (
     <dialog
@@ -35,7 +38,7 @@ const MaintenanceModal: React.FC<MaintenanceModalProps> = ({
           </button>
           
         </div>
-        <ListForm reminders={reminders} onClose={onClose} submitReminder={submitReminder}/>
+        <ListForm reminders={reminders} onClose={onClose} submitReminder={submitReminder} selectedCar={selectedCar}/>
       </div> : 
       <div className="bg-white rounded-lg shadow-md w-fullshadow-lg p-6   dark:bg-slate-100 flex flex-col">
         <div className="flex justify-between w-full shadow-md mb-4">

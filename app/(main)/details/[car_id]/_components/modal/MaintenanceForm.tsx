@@ -3,14 +3,16 @@
 import { useState } from "react";
 import { Reminder } from "../../type";
 import ReminderItem from "../reminder/ReminderItem";
+import { Car } from "@/app/(main)/type";
 
 interface ListFormProps {
   reminders : Reminder[];
   onClose?: () => void;
   submitReminder : (id: unknown) => void;
+  selectedCar : Car 
 }
 
-const MaintenanceForm = ({  onClose,reminders,submitReminder} : ListFormProps) => {
+const MaintenanceForm = ({  onClose,reminders,submitReminder,selectedCar} : ListFormProps) => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +46,7 @@ const MaintenanceForm = ({  onClose,reminders,submitReminder} : ListFormProps) =
       <div className="flex flex-col">
         {reminders.map((reminder, index) => (
           <label key={index} htmlFor="title" className={`p-2 text-gray-700 font-medium ${index%2 !== 0? "bg-jaune" : ""} ` }>
-            <ReminderItem key={index} {...reminder} reminderSelected={reminder}/>
+            <ReminderItem key={index} {...reminder} reminderSelected={reminder} selectedCar={selectedCar}/>
           </label>
         ))}
         {/* <input

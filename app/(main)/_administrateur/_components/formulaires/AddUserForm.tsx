@@ -1,388 +1,323 @@
 "use client";
 
-import { useState } from "react";
-import { User, UserStatus } from '../../../type';
-import Chauffeur from '../../../_chauffeur/page';
+import { useState, useRef } from "react";
+import { User } from "../../../type";
 import { userFonctionData, userStatutData } from "@/app/(main)/data";
-import { form } from "@heroui/react";
+import {
+  FileDropMultiple,
+  InputField,
+  SelectField,
+} from "./_components/fields";
+// import router from "next/router";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+// import { useRouter } from "next/router";
 
-
-interface AddUserFormProps {
+// ===== Formulaire principal =====
+const AddUserForm = ({
+  selectedUser,
+  onClose,
+  mutate,
+}: {
   selectedUser?: User;
-  onClose: ()=>void;
-  setUser?: (values: User) => void;
-  users?: User[];
-}
+  onClose: () => void;
+  mutate?: () => Promise<User[] | undefined>;
+}) => {
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const [passwordReset, setPasswordReset] = useState(false);
 
-const AddUserForm = ({selectedUser,onClose,setUser,users} : AddUserFormProps) => {
-    const [title, setTitle] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [selectedUserState, setSelectedUserState] = useState(selectedUser);
-    const [selectedUserFonctionState, setSelectedUserFonctionState] = useState(selectedUser?.fonction.id);
-    const [formData, setFormData] = useState({});
-    const [newUser, setNewUser] = useState<User>();
-    const [inputPermis, setInputPermis] = useState<boolean>(false)
-    const [inputSpecialite, setInputSpecialite] = useState<boolean>(false)
+  const router = useRouter();
+  const toHtmlDate = (date: string | Date) => {
+    const d = new Date(date);
+    // On récupère l'année, le mois et le jour en LOCAL (pas UTC)
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
 
+    return `${year}-${month}-${day}`;
+  };
 
-    const _user = {
-        id: 3,
-        nom: "RAKOTONDRAMELO",
-        prenom: "Safidinandrasana Angelo",
-        date_naissance: new Date('2025-02-18'),
-        cin: {num:"101 241 155 000" , photo: "https://i.pravatar.cc/150?u=a042581f4e29026024d"},
-        email: "tony.reichert@example.com",
-        contact: "0332203223",
-        fonction: userFonctionData[4],
-        status: userStatutData[0],
-        avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-        cv: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-        created_at : new Date('10-02-2026'),
-        adress: 'LOT 3 W5 T6',
-        mdp: "STRing0123",
-      }
-    const typeUser = (selectedUserState != undefined)? Object.keys(selectedUserState) : Object.keys(_user)
+  const validate = () => {
+    const errs: Record<string, string> = {};
+    if (formData.email && !/^\S+@\S+\.\S+$/.test(formData.email))
+      errs.email = "Email invalide";
+    if (formData.contact && !/^\d{8,15}$/.test(formData.contact))
+      errs.contact = "Numéro invalide";
+    if (formData.numCin && !/^\d{12}$/.test(formData.numCin))
+      errs.numCin = "C.I.N invalide";
+    if (formData.password && formData.password.length < 8)
+      errs.password = "Le mot de passe doit faire au moins 8 caractères";
+    if (
+      formData.password &&
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(
+        formData.password,
+      )
+    )
+      errs.password =
+        "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+  // const router = useRouter();
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, type } = e.target;
+    const value =
+      type === "file"
+        ? (e.target as HTMLInputElement).files?.[0]
+        : e.target.value;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { type, name, value} = e.target
-        setFormData(prev => {
-            if (selectedUserFonctionState !== undefined){
-                setSelectedUserFonctionState(formData.fonction || selectedUserFonctionState)
-            }
-            return {
-                ...prev,
-                [name]: value
-            }
-        })
+  const handleFilesChange = (name: string, files: File[]) =>
+    setFormData((prev) => ({ ...prev, [name]: files }));
 
-        // setTitle(e.target.value);
-    };
-    const addUser = ()=>{
-        if (selectedUserState != undefined){
-            setSelectedUserState({
-                id: selectedUserState.id,
-                nom: formData.nom || selectedUserState.nom,
-                prenom: formData.prenom || selectedUserState.prenom,
-                date_naissance: new Date(formData.date_naissance || selectedUserState.date_naissance,),
-                cin: {num:formData.num_cin || selectedUserState.cin.num,  photo: formData.photo_cin || selectedUserState.cin.photo},
-                email: formData.email || selectedUserState.email,
-                contact: formData.contact || selectedUserState.contact,
-                fonction: userFonctionData[Number(formData.fonction || selectedUserState.fonction.id)],
-                status: userStatutData[Number(formData.statut || selectedUserState.status.id)],
-                avatar: formData.avatar || selectedUserState.avatar,
-                cv: formData.cv || selectedUserState.cv,
-                created_at : new Date(selectedUserState.created_at),
-                modify_at : new Date(),
-                adress: formData.adress || selectedUserState.adress,
-                mdp: formData.mdp || selectedUserState.mdp,
-                permis: {num: formData.num_permis || selectedUserState.permis?.num, photo: formData.photo_permis || selectedUserState.permis?.photo,},
-                specialite: formData.specialite || selectedUserState.specialite || null
-                })
-        }else{
-            setNewUser({
-                id: selectedUserState.id,
-                nom: formData.nom ,
-                prenom: formData.prenom ,
-                date_naissance: new Date(formData.date_naissance),
-                cin: {num:formData.num_cin , photo: formData.photo_cin},
-                email: formData.email,
-                contact: formData.contact,
-                fonction: userFonctionData[Number(formData.fonction)],
-                status: userStatutData[Number(formData.statut)],
-                avatar: formData.avatar,
-                cv: formData.cv ,
-                created_at : new Date(),
-                modify_at : new Date(),
-                adress: formData.adress,
-                mdp: "hasard",
-                permis: {num: formData.num_permis || null , photo: formData.photo_permis || null},
-                specialite: formData.specialite || null
-            })
-        }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const isValid = validate();
+
+    if (!isValid) {
+      setLoading(false);
+      return;
     }
-    
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        // if (!formData.type.trim()) return; // ne rien envoyer si vide
-        // setLoading(true);
-        
-        try {
-        // ⚡ Ici tu peux remplacer par ton API call
-        console.log(selectedUserState)
-        console.log(newUser)
-        // Exemple : await createList({ title });
-        alert(`Liste enregistrée : ${formData.nom}`);
-        onClose();
-        } catch (err) {
-        console.error("Erreur :", err);
-        } finally {
-        setLoading(false);
-        }
-    };
-    console.log(selectedUserFonctionState)
-    
-    const [typeMap,setTypeMap] = useState({
-        date_naissance: 'date',
-        email: 'email',
-        avatar: 'file',
-        cv: 'file',
-        mdp:'password'
-        
-    })
-    return (
-        <form onSubmit={handleSubmit} className="flex flex-col  justify-between w-full mb-4 p-4 overflow-auto gap-4">
+    setLoading(true);
 
-            {/* modele */}
-            {typeUser.slice(1).map((type, index) => (
-                type === 'created_at' || type === '_index' || type === 'mdp' || type === 'specialite' || type === 'permis'?'':
-                type === 'cin' ?
-                    <div key={index}>
-                        <div className="flex flex-col" key={`num_${index}`}>
-                            <label>
-                                NUMERO {type.toLocaleUpperCase()}
-                            </label>
-                            <input
-                                id={`num_${type}`}
-                                name={`num_${type}`}
-                                type= {typeMap[type] || "string" }
-                                placeholder={`numero ${type}`}
-                                value=
-                                {
-                                    selectedUserState !== undefined? 
-                                        formData[`num_${type}`] || selectedUserState[type]?.num 
-                                        :
-                                        formData[`num_${type}`] || ""
-                                }
-                                onChange={handleChange}
-                                className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                                required
-                            />
-                        </div>
-                        {
-                        selectedUserState === undefined? 
-                        <div className="flex flex-col mt-4" key={`photo_${index}`}>
-                            <label>
-                                PHOTO {type.toLocaleUpperCase()}
-                            </label>
-                            <input
-                                id={`photo_${type}`}
-                                name={`photo_${type}`}
-                                type= 'file'
-                                value= {formData[`photo_${type}`] || ""}
-                                // disabled = {false}
-                                placeholder={`photo ${type}`}
-                                onChange={handleChange}
-                                className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                                required
-                            />
-                            <img className="flex flex-col w-full" key={`photo_${index}`} src={formData[`photo_${type}`]}/>
-                        </div>
-                        :
-                        <div className="flex flex-col mt-4" key={`photo_${index}`}>
-                            <label htmlFor={`photo_${type}`}>
-                                PHOTO {type.toLocaleUpperCase()}
-                            </label>
-                            
-                            <input
-                                id={`photo_${type}`}
-                                name={`photo_${type}`}
-                                type= 'file'
-                                value= {formData[`photo_${type}`] || ""}
-                                // disabled = {false}
-                                placeholder={`photo ${type}`}
-                                onChange={handleChange}
-                                className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                            />
-                            <img className="flex flex-col w-full" key={`photo_${index}`} src={selectedUserState[type]?.photo}/>
-                        </div>
-                        }
-                        
-                    </div>
-                :
-                type ==="fonction"?
-                    <div className="flex flex-col " key={index}>
-                        <label>
-                            {type.toUpperCase()}
-                        </label>
-                        <select 
-                            className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required
-                            onChange={handleChange}
-                            id={type}
-                            name={type}
-                            value={formData.fonction || selectedUserFonctionState}
-                        >
-                            {
-                                selectedUserState !== undefined ? '':<option value="">Choisissez sa fonction</option>
-                            }
-                            {
-                                userFonctionData.map((userFonction)=>(
-                                    <option value={userFonction.id} key={userFonction.id}>{userFonction.desc}</option>
-                                ))
-                            }
-                        </select>
-                        {
-                            parseInt(formData.fonction) === 1 || selectedUserFonctionState === 1? 
-                            <div className="flex flex-col mt-4" >
-                                <label>
-                                    SPECIALITE
-                                </label>
-                                <input
-                                    id="specialite"
-                                    name="specialite"
-                                    value={formData.specialite || selectedUserState?.specialite || ''}
-                                    onChange={handleChange}
-                                    placeholder="Ajouter specialite"
-                                    className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                                    required
-                                />
-                            </div>
-                            :
-                            parseInt(formData.fonction) === 0 || selectedUserFonctionState === 0? 
-                            <div key={index} className="mt-4">
-                                <div className="flex flex-col" key={`num_${index}`}>
-                                    <label>
-                                        NUMERO PERMIS
-                                    </label>
-                                    <input
-                                        id={`num_permis`}
-                                        name={`num_permis`}
-                                        type= {typeMap[type] || "string" }
-                                        placeholder={`numero permis`}
-                                        value=
-                                        {
-                                            selectedUserState !== undefined? 
-                                                formData[`num_permis`] || selectedUserState['permis']?.num || '' 
-                                                :
-                                                formData[`num_permis`] || ""
-                                        }
-                                        onChange={handleChange}
-                                        className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                                        required
-                                    />
-                                </div>
-                                {
-                                selectedUserState === undefined? 
-                                <div className="flex flex-col mt-4" key={`photo_${index}`}>
-                                    <label>
-                                        PHOTO PERMIS
-                                    </label>
-                                    <input
-                                        id={`photo_permis`}
-                                        name={`photo_permis`}
-                                        type= 'file'
-                                        value= {formData[`photo_permis`] || ""}
-                                        // disabled = {false}
-                                        placeholder={`photo ${type}`}
-                                        onChange={handleChange}
-                                        className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                                        required
-                                    />
-                                    <img className="flex flex-col w-full" key={`photo_permis`} src={formData['photo_permis']}/>
-                                </div>
-                                :
-                                <div className="flex flex-col mt-4" key={`photo_${index}`}>
-                                    <label htmlFor="photo_permis">PHOTO PERMIS</label>
-                                    <input
-                                        id={`photo_permis`}
-                                        name={`photo_permis`}
-                                        type= 'file'
-                                        value= {formData[`photo_permis`] || ""}
-                                        // disabled = {false}
-                                        placeholder={`photo ${type}`}
-                                        onChange={handleChange}
-                                        className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                                    />
-                                    <img className="flex flex-col w-full" key={`photo_permis`} src={selectedUserState["permis"]?.photo}/>
-                                </div>
-                                }
-                                
-                            </div>:''
-                        }
-                    </div>
-                    :
-                type==="status"?
-                    <div className="flex flex-col " key={index}>
-                        <label>
-                            {type.toUpperCase()}
-                        </label>
-                        <select 
-                            className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required
-                            onChange={handleChange}
-                            id={type}
-                            name={type}
-                            value={formData.status || selectedUserState?.status || ''}
-                        >
-                            {
-                                selectedUserState !== undefined ? '':<option value="">Choisissez sa disponibilite actuelle</option>
-                            }
-                            {
-                                userStatutData.map((userStatut)=>(
-                                    <option value={userStatut.id} key={userStatut.id}>{userStatut.desc}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    :
-                type==="team"?
-                    <div className="flex flex-col " key={index}>
-                        <label>
-                            {type.toUpperCase()}
-                        </label>
-                        <select 
-                            className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required
-                            onChange={handleChange}
-                            id={type}
-                            name={type}
-                            value={formData.team || selectedUserState?.team}
-                        >
-                            <option value={"executeur"}>Executeur</option>
-                            <option value={"ordonnateur"}>Ordonnateur</option>
-                        </select>
-                    </div>
-                    :
-                    <div className="flex flex-col" key={index}>
-                        <label>
-                            {type === "date_naissance"? "Date de naissance".toLocaleUpperCase():type.toUpperCase()}
-                        </label>
-                        <input
-                            id={type}
-                            name={type}
-                            type= {typeMap[type] || "string" }
-                            value={
-                                selectedUserState !== undefined? 
-                                    type !== 'avatar'?
-                                        type !== 'cv'?
-                                            type !== 'date_naissance'?
-                                                formData[type] || selectedUserState[type]:
-                                                formData[type] ||new Date(selectedUserState[type]).toISOString().split('T')[0]
-                                        : 
-                                        formData[type] || ""
-                                    :
-                                    formData[type] || ""
-                                : 
-                                formData[type] || ""
-                            }
-                            onChange={handleChange}
-                            placeholder={(selectedUserState !== undefined)? selectedUserState[type]:type}
-                            className="border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required= {selectedUserState !== undefined? false:true}
-                        />
-                    </div>
-            ))}
-            {/* Bouton */}
-            <button
-                type="submit"
-                onClick={addUser}
-                disabled={loading}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md w-full transition-colors duration-200 disabled:opacity-50"
-                >
-                {loading ? "Envoi..." : (selectedUserState !== undefined)?"Modifier":"Ajouter"}
-            </button>
-        </form>
-        );
+    try {
+      const data = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (Array.isArray(value))
+          value.forEach((f: File) => data.append(key, f));
+        else if (value instanceof File) data.append(key, value);
+        else if (value !== undefined && value !== null)
+          data.append(key, value.toString());
+      });
+
+      const isEdit = !!selectedUser;
+
+      const url = isEdit
+        ? `${process.env.NEXT_PUBLIC_API_URL}users/${selectedUser.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}users`;
+
+      const method = isEdit ? "PUT" : "POST";
+      // console.log("URL : "+ url +" METHOD : "+ method)
+      // console.log(formData)
+      console.log(data);
+      const token = localStorage.getItem("token");
+      const res = await fetch(url, {
+        method,
+        body: data,
+        headers: { Authorization: token ? `Bearer ${token}` : "" },
+      });
+      if (!res.ok) throw new Error("Erreur API");
+
+      const result = await res.json();
+      console.log("Réponse API :", result);
+      // console.log(data);
+
+      // window.location.reload();
+      // router.refresh();
+      // router.reload();
+      if (typeof mutate === "function") {
+        console.log("Mutating data...");
+        await mutate();
+      }
+      toast.success(
+        `Utilisateur ${selectedUser ? "modifié" : "ajouté"} avec succès !`,
+      );
+      onClose();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de l'envoi du formulaire");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 p-6 w-full mx-auto  bg-white overflow-y-auto sm:text-xl"
+    >
+      <InputField
+        label="Nom"
+        name="name"
+        value={formData.name ?? selectedUser?.name.toUpperCase() ?? ""}
+        onChange={handleChange}
+        required
+      />
+      <InputField
+        label="Prénom"
+        name="firstName"
+        value={formData.firstName ?? selectedUser?.firstName ?? ""}
+        onChange={handleChange}
+        required
+      />
+      <InputField
+        label="Date de naissance"
+        name="birthday"
+        type="date"
+        value={
+          formData.birthday ??
+          toHtmlDate(
+            selectedUser?.birthday ? selectedUser?.birthday : new Date(),
+          ) ??
+          ""
+        }
+        onChange={handleChange}
+        required
+      />
+      <InputField
+        label="Adresse"
+        name="adress"
+        value={formData.adress ?? selectedUser?.adress ?? ""}
+        onChange={handleChange}
+        required
+      />
+      <InputField
+        label="Email"
+        name="email"
+        type="email"
+        value={formData.email ?? selectedUser?.email ?? ""}
+        onChange={handleChange}
+        required
+        error={errors.email}
+      />
+      <InputField
+        label="Contact"
+        name="contact"
+        value={formData.contact ?? selectedUser?.contact ?? ""}
+        onChange={handleChange}
+        required
+        error={errors.contact}
+      />
+
+      <InputField
+        label="Numéro CIN"
+        name="numCin"
+        value={formData.numCin ?? selectedUser?.cin?.num ?? ""}
+        onChange={handleChange}
+        error={errors.numCin}
+        required
+      />
+      <FileDropMultiple
+        label="Photo CIN"
+        name="photo_cin"
+        files={formData.photo_cin ?? []}
+        onChange={(f) => handleFilesChange("photo_cin", f)}
+        accept="image/*"
+        multiple
+      />
+
+      <FileDropMultiple
+        label="Photo de profil"
+        name="profil"
+        files={formData.profil ?? []}
+        onChange={(f) => handleFilesChange("profil", f)}
+        accept="image/*"
+        multiple={false}
+      />
+
+      <FileDropMultiple
+        label="CV"
+        name="cv"
+        files={formData.cv ?? []}
+        onChange={(f) => handleFilesChange("cv", f)}
+        accept=".pdf,.doc,.docx"
+        multiple={false}
+      />
+
+      <SelectField
+        label="Role"
+        name="role"
+        value={formData.role ?? selectedUser?.role.toLocaleString() ?? ""}
+        options={userFonctionData.map((f) => ({
+          value: f.value,
+          label: f.label,
+        }))}
+        onChange={handleChange}
+        required
+      />
+
+      {/* Champ Specialite conditionnel */}
+      {String(formData.role || selectedUser?.role) === "TECHNICIAN" && (
+        <InputField
+          label="Spécialité"
+          name="speciality"
+          value={formData.speciality || selectedUser?.speciality || ""}
+          onChange={handleChange}
+          required
+        />
+      )}
+
+      {/* Champ Permis conditionnel */}
+      {String(formData.role || selectedUser?.role) === "DRIVER" && (
+        <>
+          <InputField
+            label="Numéro Permis"
+            name="numDrivingLicense"
+            value={
+              formData.numDrivingLicense ??
+              selectedUser?.drivingLicense?.num ??
+              ""
+            }
+            onChange={handleChange}
+            required
+          />
+          <FileDropMultiple
+            label="Photo Permis"
+            name="photo_permis"
+            files={formData.photo_permis ?? []}
+            onChange={(f) => handleFilesChange("photo_permis", f)}
+            accept="image/*,.pdf"
+            multiple
+          />
+        </>
+      )}
+
+      <SelectField
+        label="Statut"
+        name="status"
+        value={formData.status ?? selectedUser?.status ?? ""}
+        options={userStatutData.map((s) => ({
+          value: s.value,
+          label: s.label,
+        }))}
+        onChange={handleChange}
+        required
+      />
+      {selectedUser && !passwordReset && (
+        <button
+          type="button"
+          onClick={() => setPasswordReset(true)}
+          className="text-blue-500 hover:text-blue-700"
+        >
+          Réinitialiser le mot de passe
+        </button>
+      )}
+      {(!selectedUser || passwordReset) && (
+        <InputField
+          label="Mot de passe"
+          name="password"
+          value={formData.password ?? ""}
+          onChange={handleChange}
+          type="password"
+          required
+          error={errors.password}
+          isPassword
+        />
+      )}
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md mt-4 disabled:opacity-50"
+      >
+        {loading ? "Envoi..." : selectedUser ? "Modifier" : "Ajouter"}
+      </button>
+    </form>
+  );
 };
 
 export default AddUserForm;

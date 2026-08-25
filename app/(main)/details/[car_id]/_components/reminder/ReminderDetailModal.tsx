@@ -9,7 +9,7 @@ interface ReminderDetailModalProps {
   onClose: () => void;
   reminderSelected? : Reminder;
   submitReminder? : (id: unknown) => void;
-  selectedCar: Car
+  selectedCar: Car | undefined
 }
 
 

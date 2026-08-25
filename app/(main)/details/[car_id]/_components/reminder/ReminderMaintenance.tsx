@@ -101,6 +101,7 @@ const ReminderMaintenance = ({ show,selectedCar }: reminderMaintenanceProps) => 
           onClose={() => setOpenModal(false)}
           reminders = {reminderSelected}
           submitReminder = {removeSelectedReminders}
+          selectedCar = {selectedCar}
         />
       )}
     </div>
