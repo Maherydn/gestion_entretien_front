@@ -21,4 +21,4 @@ export interface Maintenance {
   values: MaintenanceValue[];
 }
 
-export { Car };
+export type { Car };

@@ -1,3 +1,5 @@
+import { Warning } from "../(main)/type";
+
 export const fetcher = async (url: string) => {
   const token = localStorage.getItem("token");
   const res = await fetch(url, {
@@ -11,4 +13,22 @@ export const fetcher = async (url: string) => {
   console.log("Fetched data:", data);
   // const sorted = [...data].sort((a, b) => a.name.localeCompare(b.name));
   return data;
+};
+
+export const fetcherWarning = async (url: string, carId: number) => {
+  const token = localStorage.getItem("token");
+  const res = await fetch(url, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) throw new Error("Erreur API");
+  const data = await res.json();
+  console.log("carId:", carId);
+  console.log("Fetched warnings:", data);
+  // const sorted = [...data].sort((a) => a.car.id.localeCompare(carId));
+  // console.log("Sorted warnings:", sorted);
+  // return data.filter((warning: Warning) => warning.car.id === carId);
+  return data
 };

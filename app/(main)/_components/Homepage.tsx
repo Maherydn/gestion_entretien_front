@@ -77,10 +77,10 @@ export default function HomePage({user}: HomePageProps) {
             <CarFilter onChange={setFilters} show={show}/>
       
         <div className="w-full flex items-start md:justify-between  flex-wrap gap-6 px-5 justify-center">
-            {filteredCars.map((car, index) => (
+            {filteredCars.map((car) => (
             <CarCard
-                key={index}
-                id={index + 1 }
+                key={car.id}
+                id={car.id}
                 immatriculation={car.registrationNumber || 'N/A'}
                 kilometrage={car.odometer || 0}
                 visiteTechnique={car.technicalControlDate || 'N/A'}

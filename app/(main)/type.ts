@@ -51,6 +51,7 @@ export interface TechnicalControl {
   createdAt?: Date;
 }
 export interface Car {
+  id: number;
   type: string;
   // nombre de places
   seats?: number;
@@ -216,4 +217,14 @@ export interface Entretien {
   notes?: string;
   created_at: Date;
   validation?: Validation;
+}
+
+export interface Warning {
+  id: number;
+  description: string;
+  priorityLevel: number;
+  selectedOptions? : string[];
+  handleOptionChange? : (event: React.ChangeEvent<HTMLInputElement>)=>void;
+  reminderSelected? : Warning;
+  car?: Car
 }
